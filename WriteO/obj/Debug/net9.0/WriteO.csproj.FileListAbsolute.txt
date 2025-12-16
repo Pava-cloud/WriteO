@@ -1,0 +1,14 @@
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.GeneratedMSBuildEditorConfig.editorconfig
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.AssemblyInfoInputs.cache
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.AssemblyInfo.cs
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.csproj.CoreCompileInputs.cache
+/home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/WriteO
+/home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/WriteO.deps.json
+/home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/WriteO.runtimeconfig.json
+/home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/WriteO.dll
+/home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/WriteO.pdb
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.dll
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/refint/WriteO.dll
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.pdb
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.genruntimeconfig.cache
+/home/pava/coding/WriteO/WriteO/obj/Debug/net9.0/ref/WriteO.dll

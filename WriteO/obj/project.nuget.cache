@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "j6wRBES2YCw=",
+  "success": true,
+  "projectFilePath": "/home/pava/coding/WriteO/WriteO/WriteO.csproj",
+  "expectedPackageFiles": [
+    "/home/pava/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.9/microsoft.aspnetcore.app.ref.9.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}
