@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using static System.Console;
 
 namespace WriteO;
 
@@ -8,148 +6,57 @@ class Program
 {
     static void Main(string[] args)
     {
-	Console.WriteLine("Test");
-        User user = new User(UserFetcher.GetName(), UserFetcher.GetLang());
-	Console.WriteLine(user);
-	int mode = 0;
-	while(true)
-	{
-	    Console.Clear();
-	    Console.WriteLine(mode);
-	    Console.WriteLine("What action do you want to perform?\n1.....Messages\n2.....FileSystem\n3.....WIP");
-	    if(int.TryParse(Console.ReadLine().Remove(1), out mode))
-	    {
-		if(mode == 1) {}
-	    }
-	}
-    }
-}
-
-public class Mode
-{
-}
-
-public static class UserFetcher
-{
-    public static int key = 10;
-    public static string GetName()
-    {
-	string? name = "";
-	do
-	{
-            try
-	    {
-	        using(StreamReader nameGetter = new StreamReader("name.txt"))
-	        {
-	            name = String.DecodeText(nameGetter.ReadLine(), key);
-	        }
-	    }
-	    catch(Exception)
-	    {
-	        StreamWriter nameWriter = new StreamWriter("name.txt");
-	        do
-	        {
-		    Console.Clear();
-		    Console.WriteLine("Welcome to WriteO - The successor to WriteC");
-	            Console.WriteLine("Please enter your name:");
-	            name = Console.ReadLine();
-	        } while(string.IsNullOrEmpty(name));
-	        nameWriter.WriteLine(String.EncodeText(name, key));
-	        nameWriter.Close();
-	    }
-	} while(string.IsNullOrEmpty(name));
-	return name;
-    }
-    public static string GetLang()
-    {
-        string lang = "NotEmpty";
-	do
-	{
-	    try
-	    {
-	        using(System.IO.StreamReader langGetter = new StreamReader("lang.txt"))
+		WriteLine("Test");
+		ClearAll();
+        WriteLine("Welcome to WriteO - The successor to WriteC");
+		(string userName, bool newUser) = DataFetcher.GetName();
+		if (newUser) 
 		{
-			lang = langGetter.ReadLine();
+			string path;
+            WriteLine("It seems as if you were a new user. Please select a path for the server.");
+			do
+			{
+				path = ReadLine();
+			} while(!Directory.Exists(path));
+			if (Environment.OSVersion.Platform == PlatformID.Unix)
+			{
+				Files.Log = path + (path[^1] == '/' ? "log.txt" : "/log.txt");
+				Files.FS = path + (path[^1] == '/' ? "files/" : "/files/");
+			}
+			else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+			{
+				Files.Log = path + (path[^1] == '\\' ? "log.txt" : "\\log.txt");
+				Files.FS = path + (path[^1] == '\\' ? "files\\" : "\\files\\");
+			}
+        }
+        User.InitName(userName);
+		//User.InitLang(DataFetcher.GetLang());
+		int mode = 0;
+		while(mode != 4)
+		{
+		    ClearAll();
+		    WriteLine("What action do you want to perform?\n1.....Messages\n2.....FileSystem\n3.....WIP\n4.....Exit\n");
+#pragma warning disable
+		    if(int.TryParse(ReadLine().Remove(1), out mode))
+			{
+				Mode.Select(mode);
+			}
 		}
-	    }
-	    catch(Exception)
-	    {
-		lang = "DE";
-		StreamWriter langWriter = new StreamWriter("lang.txt");
-		do
-		{
-		    do
-		    {
-		        Console.Clear();
-			if(string.IsNullOrEmpty(lang) || !LangList(lang))
-			    Console.WriteLine("++ ERROR - Please enter a valid Language ++");
-                        Console.WriteLine("Please enter your language:");
-		        lang = Console.ReadLine().ToUpper();
-		    } while(string.IsNullOrEmpty(lang));
-		} while(!LangList(lang)); 
-		langWriter.WriteLine(lang);
-		langWriter.Close();
-	    }
-        } while(string.IsNullOrEmpty(lang));
-        return (string)lang;
-    }
-    public static bool LangList(string input)
-    {
-        string[] allowedLangs = {
-	    "DE", "EN"
-	};
-	bool retval = false;
-        foreach(string allowedLang in allowedLangs)
-	{
-	    if(input==allowedLang) retval = true;
 	}
-	return retval;
+	public static void ClearAll()
+	{
+        // Source - https://stackoverflow.com/a
+        // Posted by Alex
+        // Retrieved 2026-01-16, License - CC BY-SA 4.0
+
+        Clear();
+        WriteLine("\x1b[3J");
 
     }
 }
-
-class User
+public static class Files
 {
-    private string name;
-
-    public string Name
-    {
-	get; init;
-    }
-    private string lang;
-
-    public string Lang
-    {
-        get; private set;
-    }
-    public User(string name, string lang)
-    {
-        Name = name;
-	Lang = lang;
-    }
-    public override string ToString()
-    {
-        return Name;
-    }
-    public void changeLang(string newLang)
-    {
-        Lang = newLang;
-    }
-}
-
-public class String
-{
-    internal static string EncodeText(string input, int key)
-    {
-        string retval = "";
-	foreach(char c in retval)
-	{
-	    retval += (char)(c + key);
-	}
-	return retval;
-    }
-    internal static string DecodeText(string input, int key)
-    {
-	return EncodeText(input, 0 - key);
-    }
+	public static string Log { get; set; }
+	public static string Usr { get; } = "usr.json";
+	public static string FS { get; set; }
 }

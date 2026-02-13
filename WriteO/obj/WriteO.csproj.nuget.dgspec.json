@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/pava/coding/WriteO/WriteO/WriteO.csproj": {}
+    "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\WriteO.csproj": {}
   },
   "projects": {
-    "/home/pava/coding/WriteO/WriteO/WriteO.csproj": {
+    "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\WriteO.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/pava/coding/WriteO/WriteO/WriteO.csproj",
+        "projectUniqueName": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\WriteO.csproj",
         "projectName": "WriteO",
-        "projectPath": "/home/pava/coding/WriteO/WriteO/WriteO.csproj",
-        "packagesPath": "/home/pava/.nuget/packages/",
-        "outputPath": "/home/pava/coding/WriteO/WriteO/obj/",
+        "projectPath": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\WriteO.csproj",
+        "packagesPath": "C:\\Users\\pava\\.nuget\\packages\\",
+        "outputPath": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/pava/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\pava\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net9.0": {
@@ -54,18 +60,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[9.0.9, 9.0.9]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.110/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

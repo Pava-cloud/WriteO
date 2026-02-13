@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j6wRBES2YCw=",
+  "dgSpecHash": "hTpfe7m1es0=",
   "success": true,
-  "projectFilePath": "/home/pava/coding/WriteO/WriteO/WriteO.csproj",
-  "expectedPackageFiles": [
-    "/home/pava/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.9/microsoft.aspnetcore.app.ref.9.0.9.nupkg.sha512"
-  ],
+  "projectFilePath": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\WriteO.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
