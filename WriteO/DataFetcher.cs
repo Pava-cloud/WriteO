@@ -47,7 +47,7 @@ public static class DataFetcher
     public static string GetLang()
     {
         throw new NotImplementedException("Multi-Language Support not yet implemented.\nIt will get implemented as soon as possible.");
-        string langPath = "lang.txt";
+        /*string langPath = "lang.txt";
         string lang = "NotEmpty";
         do
         {
@@ -69,26 +69,30 @@ public static class DataFetcher
                 }
             }
         } while (string.IsNullOrEmpty(lang));
-        return lang;
+        return lang;*/
     }
     public static bool LangIsAllowed(string input)
     {
+        throw new NotImplementedException("Multi-Language Support not yet implemented.\nIt will get implemented as soon as possible.");
+        /*
         bool retval = false;
         foreach (string allowedLang in allowedLangs)
         {
             if (input == allowedLang) retval = true;
         }
-        return retval;
+        return retval;*/
 
     }
     public static string ListAllLang()
     {
+        throw new NotImplementedException("Multi-Language Support not yet implemented.\nIt will get implemented as soon as possible.");
+        /*
         string retval = "";
         foreach (string allowedLang in allowedLangs)
         {
             retval += $"{allowedLang}, ";
         }
         retval = retval.Remove(retval.Length - 2);
-        return retval;
+        return retval;*/
     }
 }

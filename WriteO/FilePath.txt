@@ -1,0 +1,2 @@
+/home/pava/Schreibtisch/chat/log.txt
+/home/pava/Schreibtisch/chat/files/

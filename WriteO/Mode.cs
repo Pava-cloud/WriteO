@@ -9,6 +9,7 @@ public static class Mode
     {
         if (mode == 1) Message();
         else if (mode == 2) FileSystem();
+        else if (mode == 3) SettingMode.Show();
     }
     private static void Command(string cmd)
     {
@@ -27,7 +28,7 @@ public static class Mode
                 File.Create (Files.Log).Dispose();
                 break;
             case ":cs":
-                Files.Log = cmd.Split(" ")[1];
+                CmdChangeServer(cmd.Split(" ")[1]);
                 break;
             case ":cenc":
                 CmdCenc(cmd.Remove(0, 6));
@@ -132,11 +133,32 @@ public static class Mode
             default:
                 ClearAll();
                 for (int i = 0; i < Math.Ceiling(WindowHeight / 2.0 - 1); i++) WriteLine();
-                WriteLine("Not a valid encoding");
+                for (int i = 0; i < WindowWidth / 2 - "Not a valid encoding".Length / 2; i++) Write(" ");
+                Spectre.Console.AnsiConsole.MarkupLine("[bold red]Not a valid encoding[/]");
                 for (int i = 0; i < Math.Floor(WindowHeight / 2.0 - 1); i++) WriteLine();
                 ReadKey();
                 break;
         }
     }
-
+    private static void CmdChangeServer(string path)
+    {
+		do
+		{
+			path = ReadLine();
+		} while(!Directory.Exists(path));
+		if (Environment.OSVersion.Platform == PlatformID.Unix)
+		{
+			Files.Log = path + (path[^1] == '/' ? "log.txt" : "/log.txt");
+			Files.FS = path + (path[^1] == '/' ? "files/" : "/files/");
+		}
+		else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+		{
+			Files.Log = path + (path[^1] == '\\' ? "log.txt" : "\\log.txt");
+			Files.FS = path + (path[^1] == '\\' ? "files\\" : "\\files\\");
+		}
+    	using (StreamWriter streamWriter = new StreamWriter(Files.FilePath))
+		{
+			streamWriter.WriteLine(Files.Log + '\n' +  Files.FS);
+		}
+    }
 }

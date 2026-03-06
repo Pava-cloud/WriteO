@@ -1,0 +1,113 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9555DEF6-5024-FAF8-AC72-FFB62CB771A9}|WriteO.csproj|\\\\host.lan\\data\\coding\\writeo\\writeo\\settingmode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9555DEF6-5024-FAF8-AC72-FFB62CB771A9}|WriteO.csproj|\\\\host.lan\\data\\coding\\writeo\\writeo\\mode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9555DEF6-5024-FAF8-AC72-FFB62CB771A9}|WriteO.csproj|\\\\host.lan\\data\\coding\\writeo\\writeo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9555DEF6-5024-FAF8-AC72-FFB62CB771A9}|WriteO.csproj|\\\\host.lan\\data\\coding\\writeo\\writeo\\datafetcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9555DEF6-5024-FAF8-AC72-FFB62CB771A9}|WriteO.csproj|\\\\host.lan\\data\\coding\\writeo\\writeo\\string.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9555DEF6-5024-FAF8-AC72-FFB62CB771A9}|WriteO.csproj|\\\\host.lan\\data\\coding\\writeo\\writeo\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SettingMode.cs",
+              "DocumentMoniker": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\SettingMode.cs",
+              "RelativeDocumentMoniker": "SettingMode.cs",
+              "ToolTip": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\SettingMode.cs",
+              "RelativeToolTip": "SettingMode.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAADwvw4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-17T18:02:26.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Mode.cs",
+              "DocumentMoniker": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\Mode.cs",
+              "RelativeDocumentMoniker": "Mode.cs",
+              "ToolTip": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\Mode.cs",
+              "RelativeToolTip": "Mode.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAAAIgAAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-12T09:02:20Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DataFetcher.cs",
+              "DocumentMoniker": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\DataFetcher.cs",
+              "RelativeDocumentMoniker": "DataFetcher.cs",
+              "ToolTip": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\DataFetcher.cs",
+              "RelativeToolTip": "DataFetcher.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAswFYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T07:37:47.689Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "User.cs",
+              "DocumentMoniker": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\User.cs",
+              "RelativeDocumentMoniker": "User.cs",
+              "ToolTip": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\User.cs",
+              "RelativeToolTip": "User.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAowBAAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T07:37:07.104Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "String.cs",
+              "DocumentMoniker": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\String.cs",
+              "RelativeDocumentMoniker": "String.cs",
+              "ToolTip": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\String.cs",
+              "RelativeToolTip": "String.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T07:27:08.409Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAD4vzkAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T06:58:35.998Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

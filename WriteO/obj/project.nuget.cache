@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "hTpfe7m1es0=",
+  "dgSpecHash": "dxTU3ppP03A=",
   "success": true,
   "projectFilePath": "\\\\host.lan\\Data\\coding\\WriteO\\WriteO\\WriteO.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\pava\\.nuget\\packages\\spectre.console\\0.54.0\\spectre.console.0.54.0.nupkg.sha512"
+  ],
   "logs": []
 }

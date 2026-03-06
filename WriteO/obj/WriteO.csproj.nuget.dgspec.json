@@ -49,6 +49,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Spectre.Console": {
+              "target": "Package",
+              "version": "[0.54.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

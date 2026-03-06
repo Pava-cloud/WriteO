@@ -9,7 +9,7 @@ public static class User
     public static string Name
     {
         get { return name; }
-        private set
+        set
         {
             if (string.IsNullOrEmpty(value)) throw new ArgumentException("Name was null, Name cannot be empty");
             else if (value.Length > 4)
