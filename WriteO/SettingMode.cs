@@ -1,15 +1,16 @@
-﻿namespace WriteO;
+namespace WriteO;
 
 public static class SettingMode
 {
     private static int selectedIndex = 0;
 
-    private static readonly string[] options =
+    private static string[] GetOptions() => new[]
     {
-        "Name",
-        "Server Location",
-        "Key",
-        "Exit"
+        Translations.Get("SettingName"),
+        Translations.Get("SettingServer"),
+        Translations.Get("SettingKey"),
+        Translations.Get("SettingLang"),
+        Translations.Get("SettingExit")
     };
 
     public static void Show()
@@ -17,7 +18,8 @@ public static class SettingMode
         ConsoleKey key;
         do
         {
-            DrawMenu();
+            var options = GetOptions();
+            DrawMenu(options);
             
             var keyInfo = Console.ReadKey(true);
             key = keyInfo.Key;
@@ -33,7 +35,7 @@ public static class SettingMode
                     break;
 
                 case ConsoleKey.Enter:
-                    if (selectedIndex != 3) HandleSelection();
+                    if (selectedIndex != options.Length - 1) HandleSelection();
                     else return;
                     break;
 
@@ -44,7 +46,7 @@ public static class SettingMode
         } while (true);
     }
 
-    private static void DrawMenu()
+    private static void DrawMenu(string[] options)
     {
         Console.Clear();
         Console.CursorVisible = false;
@@ -79,26 +81,37 @@ public static class SettingMode
         switch (selectedIndex)
         {
             case 0:
-                Console.Write("Enter new Name: ");
+                Console.Write(Translations.Get("EnterNewName"));
                 User.Name = Console.ReadLine() ?? User.Name;
                 break;
 
             case 1:
-                Console.Write("Enter new Server Location: ");
+                Console.Write(Translations.Get("EnterNewServer"));
                 Files.Log = Console.ReadLine() ?? Files.Log;
                 break;
 
             case 2:
-                Console.Write("Enter new Key (int): ");
+                Console.Write(Translations.Get("EnterNewKey"));
                 if (int.TryParse(Console.ReadLine(), out int key))
                     User.Key = key;
                 break;
 
             case 3:
-                return;
+                Console.Write(Translations.Get("EnterNewLang"));
+                string lang = Console.ReadLine()?.ToUpper() ?? "EN";
+                if (DataFetcher.LangIsAllowed(lang))
+                {
+                    User.changeLang(lang);
+                    using (StreamWriter langWriter = new StreamWriter("lang.txt"))
+                    {
+                        langWriter.WriteLine(lang);
+                    }
+                }
+                break;
         }
             
-        Console.WriteLine("\nPress any key to return...");
+        Console.WriteLine(Translations.Get("PressAnyKey"));
         Console.ReadKey(true);
-    }   
+    }
+   
 }
