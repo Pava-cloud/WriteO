@@ -1,4 +1,4 @@
-﻿using Spectre.Console;
+using Spectre.Console;
 using static Spectre.Console.AnsiConsole;
 //using static System.Console;
 
@@ -8,15 +8,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        String.WriteCenteredMarkupText("[green]✓ Build completed successfully[/]", System.Console.WindowHeight / 2);
+        String.WriteCenteredMarkupText(Translations.Get("BuildSuccess"), System.Console.WindowHeight / 2);
 		ClearAll();
-        String.WriteCenteredText("Welcome to WriteO - The successor to WriteC\nInitializing...", System.Console.WindowHeight / 2);
+        String.WriteCenteredText(Translations.Get("Welcome"), System.Console.WindowHeight / 2);
         #region Fetching
         (string userName, bool newUser) = DataFetcher.GetName();
 		if (newUser) 
 		{
 			string path;
-            System.Console.WriteLine("It seems as if you were a new user. Please select a path for the server.");
+            System.Console.WriteLine(Translations.Get("NewUserPath"));
 			do
 			{
 				path = System.Console.ReadLine();
@@ -45,7 +45,7 @@ class Program
 			}
 		}
 		User.InitName(userName);
-        //User.InitLang(DataFetcher.GetLang());
+        User.InitLang(DataFetcher.GetLang());
         #endregion Fetching
         int mode = 0;
 		while(mode != 4)
@@ -53,24 +53,25 @@ class Program
 		    ClearAll();
                     var choice = Prompt(
                                     new SelectionPrompt<string>()
-                                    .Title("Which Action do you want to perform?")
+                                    .Title(Translations.Get("ActionPrompt"))
                                     .WrapAround()
                                     //.HighlightStyle()
-                                    .AddChoices("Messages", "File Server", "Settings", "Exit")); // Same as return values
-                    switch (choice) 
+                                    .AddChoices(Translations.Get("Messages"), Translations.Get("FileServer"), Translations.Get("Settings"), Translations.Get("Exit"))); // Same as return values
+                    if (choice == Translations.Get("Messages"))
                     {
-                            case "Messages":
-                                    mode = 1;
-                                    break;
-                            case "File Server":
-                                    mode = 2;
-                                    break;
-                            case "Settings":
-                                    mode = 3;
-                                    break;
-                            case "Exit":
-                                    mode = 4;
-                                    break;
+                        mode = 1;
+                    }
+                    else if (choice == Translations.Get("FileServer"))
+                    {
+                        mode = 2;
+                    }
+                    else if (choice == Translations.Get("Settings"))
+                    {
+                        mode = 3;
+                    }
+                    else if (choice == Translations.Get("Exit"))
+                    {
+                        mode = 4;
                     }
         	Mode.Select(mode);
 			

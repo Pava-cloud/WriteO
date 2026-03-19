@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using static System.Console;
 using static WriteO.Program;
 namespace WriteO;
@@ -47,7 +47,7 @@ public static class Mode
 
             ClearAll();
             #region Log Output
-            WriteLine($"-- Messages --\n");
+            WriteLine(Translations.Get("MessagesHeader") + "\n");
             for (int i = lineCount; i > 0; i--)
             {
                 WriteLine(splitLog[splitLog.Length - i]);
@@ -81,14 +81,14 @@ public static class Mode
         {
             ClearAll();
             
-            WriteLine("-- File Server --\n");
-            WriteLine("1.....Upload\n2.....Download\n3.....Exit\n");
+            WriteLine(Translations.Get("FileServerHeader") + "\n");
+            WriteLine(Translations.Get("Upload") + "\n" + Translations.Get("Download") + "\n" + Translations.Get("ExitOption") + "\n");
             if (int.TryParse(ReadLine(), out mode))
             {
                 #region Upload
                 if (mode == 1)
                 {
-                    WriteLine("Choose a file to upload or \":exit\" to exit.");
+                    WriteLine(Translations.Get("ChooseUpload"));
                     string path = ReadLine();
 		    if (path == ":exit") break;
                     File.Move(path, Files.FS + path.Split('/')[path.Split('/').Length - 1]);
@@ -99,15 +99,15 @@ public static class Mode
                 {
                     string[] files = Directory.GetFiles(Files.FS);
                     foreach (string file in files) WriteLine(file);
-                    WriteLine("Which file to download? (\":exit\" to exit)");
+                    WriteLine(Translations.Get("WhichDownload"));
                     string dfile = ReadLine();
 		    if (dfile == ":exit") break;
                     if (File.Exists(Files.FS + dfile))
                     {
-                        WriteLine("Where to download to? (\":exit\" to exit)");
+                        WriteLine(Translations.Get("WhereDownload"));
                         string path = ReadLine();
                         File.Move(Files.FS + dfile, path);
-                        WriteLine("Success!");
+                        WriteLine(Translations.Get("Success"));
                     }
                 }
                 #endregion Download
@@ -133,8 +133,8 @@ public static class Mode
             default:
                 ClearAll();
                 for (int i = 0; i < Math.Ceiling(WindowHeight / 2.0 - 1); i++) WriteLine();
-                for (int i = 0; i < WindowWidth / 2 - "Not a valid encoding".Length / 2; i++) Write(" ");
-                Spectre.Console.AnsiConsole.MarkupLine("[bold red]Not a valid encoding[/]");
+                for (int i = 0; i < WindowWidth / 2 - Translations.Get("InvalidEncoding").Length / 2; i++) Write(" ");
+                Spectre.Console.AnsiConsole.MarkupLine(Translations.Get("InvalidEncoding"));
                 for (int i = 0; i < Math.Floor(WindowHeight / 2.0 - 1); i++) WriteLine();
                 ReadKey();
                 break;
