@@ -1,34 +1,32 @@
-﻿using Spectre.Console;
-using static Spectre.Console.AnsiConsole;
-//using static System.Console;
-
-namespace WriteO;
-
+﻿namespace WriteO;
 class Program
 {
-    static void Main(string[] args)
+
+    static void Main()
     {
-        String.WriteCenteredMarkupText("[green]✓ Build completed successfully[/]", System.Console.WindowHeight / 2);
+		Console.Title = "WriteO - Starting";
+        String.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
 		ClearAll();
-        String.WriteCenteredText("Welcome to WriteO - The successor to WriteC\nInitializing...", System.Console.WindowHeight / 2);
+        String.WriteCenteredText("Welcome to WriteO - The successor to WriteC", Console.WindowHeight / 4);
+		String.WriteCenteredText("Initializing...", Console.WindowHeight / 4 + 1);
         #region Fetching
-        (string userName, bool newUser) = DataFetcher.GetName();
+        (string userName, bool newUser) = DataFetcher.GetName()!;
 		if (newUser) 
 		{
 			string path;
-            System.Console.WriteLine("It seems as if you were a new user. Please select a path for the server.");
+            Console.WriteLine("Please select a path for the server.");
 			do
 			{
-				path = System.Console.ReadLine();
+				do { } while(string.IsNullOrEmpty(path = Console.ReadLine()!));
 			} while(!Directory.Exists(path));
 			if (Environment.OSVersion.Platform == PlatformID.Unix)
 			{
-				Files.Log = path + (path[^1] == '/' ? "log.txt" : "/log.txt");
+				Files.Log = path + (path[^1] == '/' ? "log.ocht" : "/log.ocht");
 				Files.FS = path + (path[^1] == '/' ? "files/" : "/files/");
 			}
 			else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 			{
-				Files.Log = path + (path[^1] == '\\' ? "log.txt" : "\\log.txt");
+				Files.Log = path + (path[^1] == '\\' ? "log.ocht" : "\\log.ocht");
 				Files.FS = path + (path[^1] == '\\' ? "files\\" : "\\files\\");
 			}
 			using (StreamWriter streamWriter = new StreamWriter(Files.FilePath))
@@ -40,43 +38,25 @@ class Program
 		{
 			using (StreamReader streamReader = new StreamReader(Files.FilePath))
 			{
-				Files.Log = streamReader.ReadLine();
-				Files.FS = streamReader.ReadLine();
+				Files.Log = streamReader.ReadLine()!;
+				Files.FS = streamReader.ReadLine()!;
 			}
 		}
 		User.InitName(userName);
         //User.InitLang(DataFetcher.GetLang());
         #endregion Fetching
-        int mode = 0;
-		while(mode != 4)
-		{ // TODO: Update for mouse support
-		    ClearAll();
-                    var choice = Prompt(
-                                    new SelectionPrompt<string>()
-                                    .Title("Which Action do you want to perform?")
-                                    .WrapAround()
-                                    //.HighlightStyle()
-                                    .AddChoices("Messages", "File Server", "Settings", "Exit")); // Same as return values
-                    switch (choice) 
-                    {
-                            case "Messages":
-                                    mode = 1;
-                                    break;
-                            case "File Server":
-                                    mode = 2;
-                                    break;
-                            case "Settings":
-                                    mode = 3;
-                                    break;
-                            case "Exit":
-                                    mode = 4;
-                                    break;
-                    }
-        	Mode.Select(mode);
-			
-		}
-                ClearAll();
-                Clear();
+
+		Console.Title = "WriteO";
+		Mode.Select();
+		ResetAll();
+	}
+	public static void ResetAll()
+	{
+		Console.CursorVisible = false;
+		Console.ResetColor();
+		ClearAll();
+		Console.Clear();
+		Console.CursorVisible = true;
 	}
 	public static void ClearAll()
 	{
@@ -84,14 +64,42 @@ class Program
         // Posted by Alex
         // Retrieved 2026-01-16, License - CC BY-SA 4.0
 
-        Clear();
-        WriteLine("\x1b[3J");
+        Console.Clear();
+        Console.WriteLine("\x1b[3J");
     }
 }
 public static class Files
 {
-	public static string Log { get; set; }
+	public static string Log { get; set; } = "";
 	public static string Usr { get; } = "usr.json";
-	public static string FS { get; set; }
+	public static string FS { get; set; } = "";
 	public static string FilePath { get; set; } = "FilePath.txt";
+}
+public class newRandom
+{
+	private int s;
+	public newRandom()
+	{
+		s = (int)DateTime.Now.Ticks % int.MaxValue;
+	}
+	public newRandom(int seed)
+    {
+        s = seed;
+    }
+	public int Next(bool includeNegatives = false)
+	{
+		if (!includeNegatives)
+			s = (s * 47231 + 8209) % 236150;
+		else
+			s = (s * -47231 + 8209) % 236150;
+		return s;
+	}
+	public int Next(int mod, bool includeNegatives = false)
+	{
+		if (!includeNegatives)
+			s = (s * 47231 + 8209) % mod;
+		else
+			s = (s * -47231 + 8209) % mod;
+		return s;
+	}
 }

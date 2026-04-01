@@ -10,22 +10,31 @@ public static class DataFetcher
         string log = "";
 	    if (File.Exists(Files.Log))
 	    {
-	        StreamReader logGetter = new StreamReader(Files.Log);
-            log = String.DecodeText(logGetter.ReadToEnd(), User.Key);
+	        BinaryReader logGetter = new (File.Open(Files.Log, System.IO.FileMode.Open));
+            try
+            {
+                log = String.DecodeText(logGetter.ReadString(), User.Key);
+
+            }
+            catch (EndOfStreamException)
+            {
+                log = "";
+            }
+
             logGetter.Close();
 	    }
 	    else File.Create(Files.Log).Dispose();
         return log;
     }
-    public static (string?, bool) GetName()
+    public static (string, bool) GetName()
     {
-        string? name = "";
+        string name = "";
         bool newUser = false;
         if(File.Exists("name.txt"))
         {
             using (StreamReader nameGetter = new StreamReader("name.txt"))
             {
-                name = nameGetter.ReadLine();
+                name = nameGetter.ReadLine()!;
 		        Console.WriteLine(name);
             }
         }
@@ -36,8 +45,8 @@ public static class DataFetcher
             do
             {
                 Console.WriteLine("Please enter your name:");
-                name = Console.ReadLine();
-            } while (string.IsNullOrEmpty(name));
+                name = Console.ReadLine()!;
+            } while (string.IsNullOrWhiteSpace(name));
             nameWriter.Write(name);
             nameWriter.Close();
             newUser = true;

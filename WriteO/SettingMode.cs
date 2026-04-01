@@ -11,9 +11,20 @@ public static class SettingMode
         "Key",
         "Exit"
     };
-
+    private static readonly string[] asciiTitle =
+    {
+        @" _____      _   _   _                 ",
+        @"/  ___|    | | | | (_)                ",
+        @"\ `--.  ___| |_| |_ _ _ __   __ _ ___ ",
+        @" `--. \/ _ \ __| __| | '_ \ / _` / __|",
+        @"/\__/ /  __/ |_| |_| | | | | (_| \__ \",
+        @"\____/ \___|\__|\__|_|_| |_|\__, |___/",
+        @"                             __/ |    ",
+        @"                            |___/     "
+    };
     public static void Show()
     {
+        Console.Title = "WriteO - Settings";
         ConsoleKey key;
         do
         {
@@ -33,8 +44,13 @@ public static class SettingMode
                     break;
 
                 case ConsoleKey.Enter:
-                    if (selectedIndex != 3) HandleSelection();
-                    else return;
+                    if (selectedIndex != options.Length - 1) HandleSelection();
+                    else
+                    {
+                        selectedIndex = 0;
+                        Console.Title = "WriteO";
+                        return;
+                    }
                     break;
 
                 case ConsoleKey.Escape:
@@ -48,7 +64,10 @@ public static class SettingMode
     {
         Console.Clear();
         Console.CursorVisible = false;
-
+        for (int i = 0; i < asciiTitle.Length; i++)
+        {
+            String.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i);
+        }
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;
 
@@ -60,14 +79,8 @@ public static class SettingMode
 
             Console.SetCursorPosition(x, y);
 
-            if (i == selectedIndex)
-            {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.WriteLine(text);
-                Console.ResetColor();
-            }
-            else Console.WriteLine(text);
+            if (i == selectedIndex) text = $"[Blue]{text}[/]";
+            Spectre.Console.AnsiConsole.MarkupLine(text);
         }
     }
 
@@ -80,7 +93,8 @@ public static class SettingMode
         {
             case 0:
                 Console.Write("Enter new Name: ");
-                User.Name = Console.ReadLine() ?? User.Name;
+                string temp = Console.ReadLine() ?? User.Name;
+                User.Name = temp.Length > 4 ? temp : User.Name;
                 break;
 
             case 1:
@@ -93,12 +107,12 @@ public static class SettingMode
                 if (int.TryParse(Console.ReadLine(), out int key))
                     User.Key = key;
                 break;
-
             case 3:
                 return;
         }
             
         Console.WriteLine("\nPress any key to return...");
+        selectedIndex = 0;
         Console.ReadKey(true);
     }   
 }

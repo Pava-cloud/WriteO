@@ -1,2 +1,2 @@
-C:\Users\pava\Documents\log.txt
-C:\Users\pava\Documents\files\
+\\host.lan\Data\Schreibtisch\chat\log.ocht
+\\host.lan\Data\Schreibtisch\chat\files\

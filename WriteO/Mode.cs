@@ -1,15 +1,42 @@
-﻿using System.Text;
+﻿using Spectre.Console;
+using System.Text;
 using static System.Console;
 using static WriteO.Program;
 namespace WriteO;
 
 public static class Mode
 {
-    public static void Select(int mode)
+    private static readonly string[] asciiTitle =
+{
+        @" _    _      _ _        _____ ",
+        @"| |  | |    (_) |      |  _  |",
+        @"| |  | |_ __ _| |_ ___ | | | |",
+        @"| |/\| | '__| | __/ _ \| | | |",
+        @"\  /\  / |  | | ||  __/\ \_/ /",
+        @" \/  \/|_|  |_|\__\___| \___/ "
+
+    };
+    public static void Select()
     {
-        if (mode == 1) Message();
-        else if (mode == 2) FileSystem();
-        else if (mode == 3) SettingMode.Show();
+        while (true)
+        { // TODO: Update for mouse support
+            ClearAll();
+            for (int i = 0; i < asciiTitle.Length; i++)
+            {
+                String.WriteCenteredMarkupText(asciiTitle[i], "", i);
+            }
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<Modes>()
+                    .WrapAround()
+                    //.HighlightStyle()
+                    .AddChoices(Modes.Messages, Modes.FileSystem, Modes.Settings, Modes.Exit)); // Same as return values
+
+            if (choice == Modes.Exit) break;
+            else if (choice == Modes.Messages) Message();
+            else if (choice == Modes.FileSystem) FileSystem.Show();
+            else if (choice == Modes.OldFileSystem) FileSystem.Show();
+            else if (choice == Modes.Settings) SettingMode.Show();
+        }
     }
     private static void Command(string cmd)
     {
@@ -27,16 +54,36 @@ public static class Mode
                 File.Delete(Files.Log);
                 File.Create (Files.Log).Dispose();
                 break;
+            case ":h":
+                String.WriteMarkupWarning("RTFM", "[gray]");
+                break;
+            case ":help":
+                String.WriteMarkupWarning("RTFM", "[gray]");
+                break;
             case ":cs":
-                CmdChangeServer(cmd.Split(" ")[1]);
+                CmdChangeServer(cmd.Split(" ", 2, StringSplitOptions.TrimEntries)[1]);
+                break;
+            case ":changeserver":
+                CmdChangeServer(cmd.Split(" ", 2, StringSplitOptions.TrimEntries)[1]);
                 break;
             case ":cenc":
                 CmdCenc(cmd.Remove(0, 6));
+                break;
+            case ":changeencoding":
+                CmdCenc(cmd.Remove(0, 16));
+                break;
+            case ":q":
+                break;
+            case ":exit":
+                break;
+            default:
+                String.WriteMarkupWarning("Command not found", "[red]");
                 break;
         }
     }
     public static void Message()
     {
+        Console.Title = "WriteO - Messages";
         string line = "";
         string log, input;
         while (true)
@@ -57,7 +104,7 @@ public static class Mode
                 WriteLine();
             }
             #endregion Log Output
-            input = ReadLine();
+            input = ReadLine()!;
             #region Commands
             if (input.StartsWith(':'))
             {
@@ -68,51 +115,12 @@ public static class Mode
             else
             {
                 line = $"{User.Name}: {input}\n";
-                StreamWriter lineWriter = new StreamWriter(Files.Log);
-                lineWriter.WriteLine(String.EncodeText(log + line, User.Key));
+                BinaryWriter lineWriter = new(File.Open(Files.Log, System.IO.FileMode.Create));
+                lineWriter.Write(String.EncodeText(log + line, User.Key));
                 lineWriter.Close();
             }
         }
-    } // DONE
-    public static void FileSystem()
-    {
-        int mode = 3;
-        do
-        {
-            ClearAll();
-            
-            WriteLine("-- File Server --\n");
-            WriteLine("1.....Upload\n2.....Download\n3.....Exit\n");
-            if (int.TryParse(ReadLine(), out mode))
-            {
-                #region Upload
-                if (mode == 1)
-                {
-                    WriteLine("Choose a file to upload or \":exit\" to exit.");
-                    string path = ReadLine();
-		    if (path == ":exit") break;
-                    File.Move(path, Files.FS + path.Split('/')[path.Split('/').Length - 1]);
-                }
-                #endregion Upload
-                #region Download
-                if (mode == 2)
-                {
-                    string[] files = Directory.GetFiles(Files.FS);
-                    foreach (string file in files) WriteLine(file);
-                    WriteLine("Which file to download? (\":exit\" to exit)");
-                    string dfile = ReadLine();
-		    if (dfile == ":exit") break;
-                    if (File.Exists(Files.FS + dfile))
-                    {
-                        WriteLine("Where to download to? (\":exit\" to exit)");
-                        string path = ReadLine();
-                        File.Move(Files.FS + dfile, path);
-                        WriteLine("Success!");
-                    }
-                }
-                #endregion Download
-            }
-        } while (mode != 3);
+        Console.Title = "WriteO";
     } // DONE
     private static void CmdCenc(string input)
     {
@@ -127,33 +135,25 @@ public static class Mode
             case "u16":
                 OutputEncoding = Encoding.Unicode;
                 break;
-            case "u32":
-                OutputEncoding = Encoding.UTF32;
-                break;
+            //case "u32":
+            //    OutputEncoding = Encoding.UTF32;
+            //    break;
             default:
-                ClearAll();
-                for (int i = 0; i < Math.Ceiling(WindowHeight / 2.0 - 1); i++) WriteLine();
-                for (int i = 0; i < WindowWidth / 2 - "Not a valid encoding".Length / 2; i++) Write(" ");
-                Spectre.Console.AnsiConsole.MarkupLine("[bold red]Not a valid encoding[/]");
-                for (int i = 0; i < Math.Floor(WindowHeight / 2.0 - 1); i++) WriteLine();
-                ReadKey();
+                String.WriteMarkupWarning("[bold red]Not a valid encoding", "[bold red]");
                 break;
         }
     }
     private static void CmdChangeServer(string path)
     {
-		do
-		{
-			path = ReadLine();
-		} while(!Directory.Exists(path));
+		do { } while(!Directory.Exists(path = ReadLine()!));
 		if (Environment.OSVersion.Platform == PlatformID.Unix)
 		{
-			Files.Log = path + (path[^1] == '/' ? "log.txt" : "/log.txt");
+			Files.Log = path + (path[^1] == '/' ? "log.txt" : "/log.ocht");
 			Files.FS = path + (path[^1] == '/' ? "files/" : "/files/");
 		}
 		else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
 		{
-			Files.Log = path + (path[^1] == '\\' ? "log.txt" : "\\log.txt");
+			Files.Log = path + (path[^1] == '\\' ? "log.txt" : "\\log.ocht");
 			Files.FS = path + (path[^1] == '\\' ? "files\\" : "\\files\\");
 		}
     	using (StreamWriter streamWriter = new StreamWriter(Files.FilePath))
@@ -161,4 +161,12 @@ public static class Mode
 			streamWriter.WriteLine(Files.Log + '\n' +  Files.FS);
 		}
     }
+}
+public enum Modes
+{
+    Messages,
+    FileSystem,
+    OldFileSystem,
+    Settings,
+    Exit
 }

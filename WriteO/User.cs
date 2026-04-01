@@ -4,7 +4,7 @@ public static class User
 {
     public static bool IsAdmin { get; set; }
     
-    private static string name;
+    private static string name = "";
 
     public static string Name
     {
@@ -17,7 +17,7 @@ public static class User
             else throw new ArgumentException($"Name was shorter than expected\nExpected at least 5 characters, got: {value.Length}");
         }
     }
-    private static string lang;
+    private static string lang = "";
 
     public static string Lang
     {
@@ -51,9 +51,9 @@ public static class User
     {
         Lang = newLang;
     }
-    public static void InitName(string name)
+    public static void InitName(string? name)
     {
-        Name = name;
+        Name = name!;
     }
     public static void InitLang(string lang)
     {
