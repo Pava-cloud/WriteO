@@ -1,2 +1,0 @@
-\\host.lan\Data\Schreibtisch\chat\log.ocht
-\\host.lan\Data\Schreibtisch\chat\files\
