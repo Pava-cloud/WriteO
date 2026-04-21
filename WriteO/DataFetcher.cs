@@ -30,9 +30,9 @@ public static class DataFetcher
     {
         string name = "";
         bool newUser = false;
-        if(File.Exists("name.txt"))
+        if(File.Exists(Files.NameFile))
         {
-            using (StreamReader nameGetter = new StreamReader("name.txt"))
+            using (StreamReader nameGetter = new StreamReader(Files.NameFile))
             {
                 name = nameGetter.ReadLine()!;
 		        Console.WriteLine(name);
@@ -40,8 +40,8 @@ public static class DataFetcher
         }
         else
         {
-		    File.Create("name.txt").Dispose();
-            StreamWriter nameWriter = new StreamWriter("name.txt");
+		    File.Create(Files.NameFile).Dispose();
+            StreamWriter nameWriter = new StreamWriter(Files.NameFile);
             do
             {
                 Console.WriteLine("Please enter your name:");

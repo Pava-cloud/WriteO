@@ -29,7 +29,6 @@ public static class SettingMode
         do
         {
             DrawMenu();
-            
             var keyInfo = Console.ReadKey(true);
             key = keyInfo.Key;
 
@@ -38,8 +37,13 @@ public static class SettingMode
                 case ConsoleKey.UpArrow:
                     selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
                     break;
-
+                case ConsoleKey.K:
+                    selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                    break;
                 case ConsoleKey.DownArrow:
+                    selectedIndex = (selectedIndex + 1) % options.Length;
+                    break;
+                case ConsoleKey.J:
                     selectedIndex = (selectedIndex + 1) % options.Length;
                     break;
 
@@ -52,6 +56,16 @@ public static class SettingMode
                         return;
                     }
                     break;
+                case ConsoleKey.Spacebar:
+                    if (selectedIndex != options.Length - 1) HandleSelection();
+                    else
+                    {
+                        selectedIndex = 0;
+                        Console.Title = "WriteO";
+                        return;
+                    }
+                    break;
+
 
                 case ConsoleKey.Escape:
                     return;
@@ -66,7 +80,7 @@ public static class SettingMode
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
         {
-            String.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i);
+            String.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i + 10);
         }
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;
@@ -110,9 +124,8 @@ public static class SettingMode
             case 3:
                 return;
         }
-            
         Console.WriteLine("\nPress any key to return...");
         selectedIndex = 0;
         Console.ReadKey(true);
-    }   
+    }
 }

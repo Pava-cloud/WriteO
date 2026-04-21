@@ -19,60 +19,8 @@ internal static class FileSystem
         "Download",
         "Exit"
     };
-/*    public static void OldShow()
-    { // BROKEN ??
-        int mode = 3;
-        do
-        {
-            ClearAll();
-            for (int i = 0; i < asciiTitle.Length; i++)
-            {
-                String.WriteCenteredMarkupText(asciiTitle[i], "", i);
-            }
-            WriteLine("1.....Upload\n2.....Download\n3.....Exit\n");
-            if (int.TryParse(ReadLine(), out mode))
-            {
-                #region Upload
-                if (mode == 1)
-                {
-                    WriteLine("Choose a file to upload or \":exit\" to exit.");
-                    string path = ReadLine()!;
-                    if (path == ":exit" || string.IsNullOrEmpty(path)) break;
-                    string fileName;
-                    if (Environment.OSVersion.Platform == PlatformID.Unix)
-                        fileName = path.Split('/')[^1];
-                    else
-                        fileName = path.Split('\\')[^1];
-                    File.Move(path, Files.FS + fileName);
-                }
-                #endregion Upload
-                #region Download
-                if (mode == 2)
-                {
-                    string[] files = Directory.GetFiles(Files.FS);
-                    foreach (string file in files)
-                    {
-                        if (Environment.OSVersion.Platform == PlatformID.Unix)
-                            WriteLine(file.Split('/')[^1]);
-                        else WriteLine(file.Split('\\')[^1]);
-                    }
-                    WriteLine("Which file to download? (\":exit\" to exit)");
-                    string dfile = ReadLine()!;
-                    if (dfile == ":exit") break;
-                    if (File.Exists(Files.FS + dfile))
-                    {
-                        WriteLine("Where to download to? (\":exit\" to exit)");
-                        string path = ReadLine()!;
-                        File.Move(Files.FS + dfile, path! + dfile);
-                        WriteLine("Success!");
-                        Thread.Sleep(500);
-                    }
-                }
-                #endregion Download
-            }
-        } while (mode != 3);
-    } // BROKEN ?? */
     private static int selectedIndex = 0;
+
     public static void Show()
     {
         Console.Title = "WriteO - Files";
@@ -89,11 +37,16 @@ internal static class FileSystem
                 case ConsoleKey.UpArrow:
                     selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
                     break;
+                case ConsoleKey.K:
+                    selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
+                    break;
 
                 case ConsoleKey.DownArrow:
                     selectedIndex = (selectedIndex + 1) % options.Length;
                     break;
-
+                case ConsoleKey.J:
+                    selectedIndex = (selectedIndex + 1) % options.Length;
+                    break;
                 case ConsoleKey.Enter:
                     if (selectedIndex != options.Length - 1) HandleSelection();
                     else
@@ -115,9 +68,9 @@ internal static class FileSystem
                     break;
 
                 case ConsoleKey.Escape:
-                            Console.Title = "WriteO";
-                            return;
-                        }
+                    Console.Title = "WriteO";
+                    return;
+            }
 
         } while (true);
     }
@@ -173,7 +126,7 @@ internal static class FileSystem
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
         {
-            String.WriteCenteredMarkupText(asciiTitle[i], "[cyan3]", i);
+            String.WriteCenteredMarkupText(asciiTitle[i], "[cyan3]", i + 10);
         }
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;
