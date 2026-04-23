@@ -122,15 +122,14 @@ public static class Mode
             case 3:
                 return;
         }
-        Console.WriteLine("\nPress any key to return...");
         selectedIndex = 0;
-        Console.ReadKey(true);
     }
 
 
 
     private static void Command(string cmd)
     {
+        if (cmd.IndexOf(' ') == -1) return;
         switch (cmd.Split(" ")[0])
         {
             case ":clear":
@@ -168,36 +167,99 @@ public static class Mode
             case ":exit":
                 break;
             case ":bl":
-                if (BlackList(cmd.Split(" ", 2)[1]))
-                    String.WriteWarning("User already blacklisted.");
+                if (cmd.Split(" ").Length != 1)
+                {
+                    if (NewBlackList(cmd.Split(" ", 2)[1]))
+                        String.WriteWarning("User already blacklisted.");
+                }
+                else
+                {
+                    ClearAll();
+                    Console.WriteLine("Blacklisted users:");
+                    Console.WriteLine(File.ReadAllText(Files.BlackList));
+                    Spectre.Console.AnsiConsole.MarkupLine("[gray]Press any key to return[/]");
+                    Console.ReadKey();
+                }
                 break;
             default:
-                String.WriteMarkupWarning("Command not found", "[red]");
+                if (cmd.EndsWith(':'))
+                    Write(cmd);
                 break;
         }
     }
-    private static bool BlackList(string user)
+    /// <summary>
+    /// Appends the user string to thw Blacklist File unless it starts with "-u ",
+    /// in which case matching entries are removed. Returns true if the file
+    /// remains unchanged.
+    /// </summary>
+    /// <param name="user">The user string to append or remove.</param>
+    /// <returns>True if no changes were made; otherwise false.</returns>
+    private static bool NewBlackList(string user)
     {
-        if (!File.Exists(Files.BlackList))
-            File.Create(Files.BlackList).Dispose();
-        using (StreamReader sr = new(Files.BlackList))
+        string path = Files.BlackList;
+
+        if (!File.Exists(path))
         {
-            while (!sr.EndOfStream)
+            if (user.StartsWith("-u "))
             {
-                string name = sr.ReadLine()!;
-                if (name == user) return true;
+                return true;
             }
+
+            File.WriteAllText(path, user + Environment.NewLine);
+            return false;
         }
-        using (StreamWriter sw = new(Files.BlackList, true))
+
+        string[] lines = File.ReadAllLines(path);
+        bool changed = false;
+
+        if (user.StartsWith("-u "))
         {
-            sw.WriteLine(user);
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i] == user)
+                {
+                    changed = true;
+                    continue;
+                }
+
+                builder.AppendLine(lines[i]);
+            }
+
+            if (changed)
+            {
+                File.WriteAllText(path, builder.ToString());
+                return false;
+            }
+
+            return true;
         }
-        return false;
+        else
+        {
+            bool exists = false;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i] == user)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists)
+            {
+                return true;
+            }
+
+            File.AppendAllText(path, user + Environment.NewLine);
+            return false;
+        }
     }
     public static void Message()
     {
         Console.Title = "WriteO - Messages";
-        string line = "";
         string log, input;
         while (true)
         {
@@ -235,15 +297,20 @@ public static class Mode
                 #endregion Commands
                 else
                 {
-                    line = $"{User.Name}: {input}\n";
-                    BinaryWriter lineWriter = new(File.Open(Files.Log, System.IO.FileMode.Create));
-                    lineWriter.Write(String.EncodeText(log + line, User.Key));
-                    lineWriter.Close();
+                    Write(input);
                 }
             }
         }
         Console.Title = "WriteO";
     } // DONE
+    public static void Write(string input)
+    {
+        string log = DataFetcher.Log();
+        string line = $"{User.Name}: {input}\n";
+        BinaryWriter lineWriter = new(File.Open(Files.Log, System.IO.FileMode.Create));
+        lineWriter.Write(String.EncodeText(log + line, User.Key));
+        lineWriter.Close();
+    }
     private static void CmdCenc(string input)
     {
         switch (input)
@@ -261,7 +328,7 @@ public static class Mode
             //    OutputEncoding = Encoding.UTF32;
             //    break;
             default:
-                String.WriteMarkupWarning("[bold red]Not a valid encoding", "[bold red]");
+                String.WriteWarning("Not a valid encoding");
                 break;
         }
     }

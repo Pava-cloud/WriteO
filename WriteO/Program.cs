@@ -3,6 +3,9 @@ namespace WriteO;
 
 class Program
 {
+    /// <summary>
+    /// Used for displaying extra details for the user
+    /// </summary>
     public static bool verbose = false;
     static void Main(string[] args)
     {
@@ -20,8 +23,8 @@ class Program
                     AnsiConsole.MarkupLine(@"[LightGoldenrod1]USAGE:[/]");
                     Console.WriteLine("\tWriteO [OPTIONS]");
                     AnsiConsole.MarkupLine("[LightGoldenrod1]OPTIONS:[/]");
-                    Console.WriteLine("\t-v, --verbose       Shows extra information about startup");
-                    Console.WriteLine($"\t-c, --config        Uses the given Config path instead of the default one ({Path.GetDirectoryName(Files.FilePath)})");
+                    Console.WriteLine("\t-v, --verbose\t\tShows extra information about startup");
+                    Console.WriteLine($"\t-c, --config\t\tUses the given Config path instead of the default one ({Path.GetDirectoryName(Files.FilePath)})");
                     Environment.Exit(0);
                 }
                 if (arg == "-c" || arg == "--config")
@@ -44,7 +47,7 @@ class Program
         Console.Title = verbose ? "WriteO - Starting.. (Initializing)" : "WriteO - Starting..";
         String.WriteCenteredText("Welcome to WriteO - The successor to WriteC", Console.WindowHeight / 4);
         String.WriteCenteredText("Initializing...", Console.WindowHeight / 4 + 1);
-        FilePathInit();
+        if (Files.FilePath == string.Empty) FilePathInit();
         Console.Title = verbose ? "WriteO - Starting... (Fetching Data)" : "WriteO - Starting...";
         Fetch();
         Console.Title = "WriteO";
@@ -63,7 +66,7 @@ class Program
                 break;
             default:
                 Console.Error.WriteLine("Your OS is currently unsupported. Please open an issue (https://www.codeberg.org/PavaLP1/WriteO/issues)" +
-                    (verbose ? "/Pull request (https://www.codeberg.org/PavaLP1/WriteO/pulls)" : "") + " for implementation.");
+                    (verbose ? "/Pull request (https://www.codeberg.org/PavaLP1/WriteO/pulls)" : "") + " for implementation. Please add info on how your OS handles file paths.");
                 Environment.Exit(1);
                 break;
         }
@@ -172,7 +175,7 @@ public static class Files
     public static string Log { get; set; } = "";
     public static string Usr { get; } = "usr.json";
     public static string FS { get; set; } = "";
-    public static string FilePath { get; set; }
+    public static string FilePath { get; set; } = string.Empty;
     public static string BlackList { get; set; } = "BlackList.ocht";
 }
 public class newRandom
