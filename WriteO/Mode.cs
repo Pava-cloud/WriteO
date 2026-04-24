@@ -125,11 +125,8 @@ public static class Mode
         selectedIndex = 0;
     }
 
-
-
     private static void Command(string cmd)
     {
-        if (cmd.IndexOf(' ') == -1) return;
         switch (cmd.Split(" ")[0])
         {
             case ":clear":
@@ -184,6 +181,7 @@ public static class Mode
             default:
                 if (cmd.EndsWith(':'))
                     Write(cmd);
+                else String.WriteWarning("Command not found");
                 break;
         }
     }
@@ -211,29 +209,21 @@ public static class Mode
 
         string[] lines = File.ReadAllLines(path);
         bool changed = false;
+        StringBuilder content = new();
 
         if (user.StartsWith("-u "))
         {
-            StringBuilder builder = new StringBuilder();
-
-            for (int i = 0; i < lines.Length; i++)
+            string userName = user.Remove(0, 3);
+            foreach (string line in lines)
             {
-                if (lines[i] == user)
+                if (!(line == userName))
                 {
-                    changed = true;
-                    continue;
+                    content.Append(line + Environment.NewLine);
                 }
-
-                builder.AppendLine(lines[i]);
+                else changed = true;
             }
-
-            if (changed)
-            {
-                File.WriteAllText(path, builder.ToString());
-                return false;
-            }
-
-            return true;
+            File.WriteAllText(path, content.ToString());
+            return !changed;
         }
         else
         {
@@ -288,17 +278,17 @@ public static class Mode
                 }
                 #endregion Log Output
                 input = ReadLine()!;
-                #region Commands
+                #region Input
                 if (input.StartsWith(':'))
                 {
                     Command(input);
                     if (input == ":exit" || input == ":q") break;
                 }
-                #endregion Commands
                 else
                 {
                     Write(input);
                 }
+                #endregion Input
             }
         }
         Console.Title = "WriteO";
@@ -363,8 +353,7 @@ public static class Mode
             {
                 while (!reader.EndOfStream)
                 {
-                    string blacklist = reader.ReadLine()!;
-                    if (blacklist.ToLower() == User.Name.ToLower())
+                    if (reader.ReadLine()!.ToLower() == User.Name.ToLower())
                         return true;
                 }
             }

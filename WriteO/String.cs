@@ -9,7 +9,7 @@ public class String
         string retval = "";
         for (int i = 0; i < str.Length; i++)
         {
-            retval += (char)(str[i] + key + i);//random.Next(60));
+            retval += (char)(str[i] + key + i);
         }
         return retval;
     }
