@@ -4,12 +4,28 @@ namespace WriteO;
 class Program
 {
     /// <summary>
-    /// Used for displaying extra details for the user
+    /// Used for displaying extra details to the user
     /// </summary>
     public static bool verbose = false;
+
     static void Main(string[] args)
     {
-        #region Args
+        HandleArgs(args);
+        Console.Title = verbose ? "WriteO - Starting. (Building)" : "WriteO - Starting.";
+        String.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
+        ClearAll();
+        Console.Title = verbose ? "WriteO - Starting.. (Initializing)" : "WriteO - Starting..";
+        String.WriteCenteredText("Welcome to WriteO - The successor to WriteC", Console.WindowHeight / 4);
+        String.WriteCenteredText("Initializing...", Console.WindowHeight / 4 + 1);
+        if (Files.FilePath == string.Empty) FilePathInit();
+        Console.Title = verbose ? "WriteO - Starting... (Fetching Data)" : "WriteO - Starting...";
+        Fetch();
+        Console.Title = "WriteO";
+        Mode.Select();
+        ResetAll();
+    }
+    private static void HandleArgs(string[] args)
+    {
         if (args.Length != 0)
         {
             for (int i = 0; i < args.Length; i++)
@@ -39,20 +55,6 @@ class Program
                 }
             }
         }
-        #endregion Args
-
-        Console.Title = verbose ? "WriteO - Starting. (Building)" : "WriteO - Starting.";
-        String.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
-        ClearAll();
-        Console.Title = verbose ? "WriteO - Starting.. (Initializing)" : "WriteO - Starting..";
-        String.WriteCenteredText("Welcome to WriteO - The successor to WriteC", Console.WindowHeight / 4);
-        String.WriteCenteredText("Initializing...", Console.WindowHeight / 4 + 1);
-        if (Files.FilePath == string.Empty) FilePathInit();
-        Console.Title = verbose ? "WriteO - Starting... (Fetching Data)" : "WriteO - Starting...";
-        Fetch();
-        Console.Title = "WriteO";
-        Mode.Select();
-        ResetAll();
     }
     private static void FilePathInit()
     {

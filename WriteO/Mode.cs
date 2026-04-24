@@ -1,6 +1,4 @@
-﻿using Spectre.Console;
-using System.Text;
-using static System.Console;
+﻿using System.Text;
 using static WriteO.Program;
 
 namespace WriteO;
@@ -263,21 +261,21 @@ public static class Mode
             {
                 log = DataFetcher.Log();
                 string[] splitLog = log.Split('\n');
-                int lineCount = (splitLog.Length >= WindowHeight - 4) ? WindowHeight - 4 : splitLog.Length;
+                int lineCount = (splitLog.Length >= Console.WindowHeight - 4) ? Console.WindowHeight - 4 : splitLog.Length;
 
                 ClearAll();
                 #region Log Output
-                WriteLine($"-- Messages --\n");
+                Console.WriteLine($"-- Messages --\n");
                 for (int i = lineCount; i > 0; i--)
                 {
-                    WriteLine(splitLog[splitLog.Length - i]);
+                    Console.WriteLine(splitLog[splitLog.Length - i]);
                 }
-                for (int i = WindowHeight - (lineCount + 4); i > 0; i--)
+                for (int i = Console.WindowHeight - (lineCount + 4); i > 0; i--)
                 {
-                    WriteLine();
+                    Console.WriteLine();
                 }
                 #endregion Log Output
-                input = ReadLine()!;
+                input = Console.ReadLine()!;
                 #region Input
                 if (input.StartsWith(':'))
                 {
@@ -306,17 +304,14 @@ public static class Mode
         switch (input)
         {
             case "u8":
-                OutputEncoding = Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;
                 break;
             case "ascii":
-                OutputEncoding = Encoding.ASCII;
+                Console.OutputEncoding = Encoding.ASCII;
                 break;
             case "u16":
-                OutputEncoding = Encoding.Unicode;
+                Console.OutputEncoding = Encoding.Unicode;
                 break;
-            //case "u32":
-            //    OutputEncoding = Encoding.UTF32;
-            //    break;
             default:
                 String.WriteWarning("Not a valid encoding");
                 break;
@@ -324,7 +319,7 @@ public static class Mode
     }
     private static void CmdChangeServer(string path)
     {
-        do { } while (!Directory.Exists(path = ReadLine()!));
+        do { } while (!Directory.Exists(path = Console.ReadLine()!));
         if (!IsBlackListed(path))
         {
             if (Environment.OSVersion.Platform == PlatformID.Unix)
