@@ -3,7 +3,6 @@
 public static class User
 {
     public static bool IsAdmin { get; set; }
-    
     private static string name = "";
 
     public static string Name
@@ -17,16 +16,17 @@ public static class User
             else throw new ArgumentException($"Name was shorter than expected\nExpected at least 5 characters, got: {value.Length}");
         }
     }
-    private static string lang = "";
+    private static Languages lang = Languages.en;
 
-    public static string Lang
+    public static Languages Lang
     {
         get { return lang; }
         private set
         {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentException("Lang was null, Lang cannot be empty");
-            else if (DataFetcher.LangIsAllowed(value)) lang = value;
-            else throw new InvalidDataException($"value {value} is not allowed as Lang\nallowed values for Lang: {DataFetcher.ListAllLang()}");
+            //if (string.IsNullOrEmpty(value.ToString())) throw new ArgumentException("Lang was null, Lang cannot be empty");
+            //else if (DataFetcher.LangIsAllowed(value.ToString())) lang = value;
+            //else throw new InvalidDataException($"value {value} is not allowed as Lang\nallowed values for Lang: {DataFetcher.ListAllLang()}");
+            lang = value;
         }
     }
     private static int key = 10;
@@ -47,16 +47,12 @@ public static class User
     {
         return Name;
     }
-    public static void changeLang(string newLang)
+    public static void setLang(Languages newLang)
     {
         Lang = newLang;
     }
     public static void InitName(string? name)
     {
         Name = name!;
-    }
-    public static void InitLang(string lang)
-    {
-        if (Lang == default || string.IsNullOrWhiteSpace(Lang)) Lang = lang;
     }
 }

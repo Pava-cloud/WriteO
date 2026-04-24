@@ -35,13 +35,7 @@ class Program
                     verbose = true;
                 if (arg == "-h" || arg == "--help")
                 {
-                    FilePathInit();
-                    AnsiConsole.MarkupLine(@"[LightGoldenrod1]USAGE:[/]");
-                    Console.WriteLine("\tWriteO [OPTIONS]");
-                    AnsiConsole.MarkupLine("[LightGoldenrod1]OPTIONS:[/]");
-                    Console.WriteLine("\t-v, --verbose\t\tShows extra information about startup");
-                    Console.WriteLine($"\t-c, --config\t\tUses the given Config path instead of the default one ({Path.GetDirectoryName(Files.FilePath)})");
-                    Environment.Exit(0);
+                    WriteHelp();
                 }
                 if (arg == "-c" || arg == "--config")
                 {
@@ -56,6 +50,19 @@ class Program
             }
         }
     }
+
+    private static void WriteHelp()
+    {
+        FilePathInit();
+        AnsiConsole.MarkupLine(@"[LightGoldenrod1]USAGE:[/]");
+        Console.WriteLine("\tWriteO [OPTIONS]");
+        AnsiConsole.MarkupLine("[LightGoldenrod1]OPTIONS:[/]");
+        Console.WriteLine("\t-v, --verbose\t\tShows extra information about startup");
+        Console.WriteLine($"\t-c, --config\t\tUses the given Config path instead of the default one ({Path.GetDirectoryName(Files.FilePath)})");
+        Environment.Exit(0);
+
+    }
+
     private static void FilePathInit()
     {
         switch (Environment.OSVersion.Platform)
@@ -67,8 +74,10 @@ class Program
                 Files.FilePath = Environment.GetEnvironmentVariable("APPDATA") + "\\WriteO\\config.txt";
                 break;
             default:
-                Console.Error.WriteLine("Your OS is currently unsupported. Please open an issue (https://www.codeberg.org/PavaLP1/WriteO/issues)" +
-                    (verbose ? "/Pull request (https://www.codeberg.org/PavaLP1/WriteO/pulls)" : "") + " for implementation. Please add info on how your OS handles file paths.");
+                Console.Error.WriteLine("Your OS is currently unsupported." +
+                    " Please open an issue (https://www.codeberg.org/PavaLP1/WriteO/issues)" +
+                    (verbose ? "/Pull request (https://www.codeberg.org/PavaLP1/WriteO/pulls)" : "") +
+                    " for implementation. Please add info on how your OS handles file paths.");
                 Environment.Exit(1);
                 break;
         }
@@ -96,11 +105,12 @@ class Program
     }
     private static void Fetch()
     {
+        Lang.Init();
         (string userName, bool newUser) = DataFetcher.GetName()!;
         if (newUser)
         {
             string path;
-            Console.WriteLine("Please select a path for the server.");
+            Console.WriteLine(Lang.getText(Keys.serverSelectText));
             do
             {
                 do { } while (string.IsNullOrEmpty(path = Console.ReadLine()!));
@@ -185,7 +195,7 @@ public class newRandom
     private int s;
     public newRandom()
     {
-        s = (int)DateTime.Now.Ticks % int.MaxValue;
+        s = (int)(DateTime.Now.Ticks % int.MaxValue);
     }
     public newRandom(int seed)
     {

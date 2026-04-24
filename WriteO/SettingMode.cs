@@ -9,6 +9,7 @@ public static class SettingMode
         "Name",
         "Server Location",
         "Key",
+        "Language",
         "Exit"
     };
     private static readonly string[] asciiTitle =
@@ -122,6 +123,11 @@ public static class SettingMode
                     User.Key = key;
                 break;
             case 3:
+                Console.Write("Enter new Language: ");
+                if (Enum.TryParse<Languages>(Console.ReadLine(), true, out Languages lang))
+                    User.setLang(lang);
+                break;
+            case 4:
                 return;
         }
         Console.WriteLine("\nPress any key to return...");

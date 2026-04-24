@@ -79,6 +79,7 @@ public static class Mode
     }
     private static void DrawMenu()
     {
+        string[] OutputModes = { Lang.getText(Keys.menuMessages), Lang.getText(Keys.menuFiles), Lang.getText(Keys.menuSettings), Lang.getText(Keys.menuExit) };
         Console.Clear();
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
@@ -88,11 +89,11 @@ public static class Mode
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;
 
-        for (int i = 0; i < options.Length; i++)
+        for (int i = 0; i < OutputModes.Length; i++)
         {
-            string text = options[i].ToString();
+            string text = OutputModes[i];
             int x = (windowWidth - text.Length) / 2;
-            int y = (windowHeight / 2 - options.Length / 2) + i;
+            int y = (windowHeight / 2 - OutputModes.Length / 2) + i;
 
             Console.SetCursorPosition(x, y);
 
@@ -165,21 +166,21 @@ public static class Mode
                 if (cmd.Split(" ").Length != 1)
                 {
                     if (NewBlackList(cmd.Split(" ", 2)[1]))
-                        String.WriteWarning("User already blacklisted.");
+                        String.WriteWarning(Lang.getText(Keys.alreadyBlacklistedText));
                 }
                 else
                 {
                     ClearAll();
-                    Console.WriteLine("Blacklisted users:");
+                    Console.WriteLine(Lang.getText(Keys.blacklistTitle));
                     Console.WriteLine(File.ReadAllText(Files.BlackList));
-                    Spectre.Console.AnsiConsole.MarkupLine("[gray]Press any key to return[/]");
+                    Spectre.Console.AnsiConsole.MarkupLine("[gray]" + Lang.getText(Keys.keyToContinueText) + "[/]");
                     Console.ReadKey();
                 }
                 break;
             default:
                 if (cmd.EndsWith(':'))
                     Write(cmd);
-                else String.WriteWarning("Command not found");
+                else String.WriteWarning(Lang.getText(Keys.commandNotFoundText));
                 break;
         }
     }
@@ -247,14 +248,14 @@ public static class Mode
     }
     public static void Message()
     {
-        Console.Title = "WriteO - Messages";
+        Console.Title = "WriteO - " + Lang.getText(Keys.menuMessages);
         string log, input;
         while (true)
         {
             if (IsBlackListed(Files.FilePath))
             {
-                String.WriteWarning("You have been banned from this server.");
-                String.WriteCenteredText("Please enter an addess for another server.", Console.WindowHeight / 2 + 1);
+                String.WriteWarning(Lang.getText(Keys.gotBannedText));
+                String.WriteCenteredText(Lang.getText(Keys.serverSelectText), Console.WindowHeight / 2 + 1);
                 CmdChangeServer(Console.ReadLine()!);
             }
             else
@@ -265,7 +266,7 @@ public static class Mode
 
                 ClearAll();
                 #region Log Output
-                Console.WriteLine($"-- Messages --\n");
+                Console.WriteLine($"-- " + Lang.getText(Keys.menuMessages) + " --\n");
                 for (int i = lineCount; i > 0; i--)
                 {
                     Console.WriteLine(splitLog[splitLog.Length - i]);
@@ -313,7 +314,7 @@ public static class Mode
                 Console.OutputEncoding = Encoding.Unicode;
                 break;
             default:
-                String.WriteWarning("Not a valid encoding");
+                String.WriteWarning(Lang.getText(Keys.invalidEncoding));
                 break;
         }
     }
