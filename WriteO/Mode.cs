@@ -79,7 +79,7 @@ public static class Mode
     }
     private static void DrawMenu()
     {
-        string[] OutputModes = { Lang.getText(Keys.menuMessages), Lang.getText(Keys.menuFiles), Lang.getText(Keys.menuSettings), Lang.getText(Keys.menuExit) };
+        string[] OutputModes = { Lang.GetText(Keys.menuMessages), Lang.GetText(Keys.menuFiles), Lang.GetText(Keys.menuSettings), Lang.GetText(Keys.menuExit) };
         Console.Clear();
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
@@ -128,59 +128,40 @@ public static class Mode
     {
         switch (cmd.Split(" ")[0])
         {
-            case ":clear":
+            case ":clear" or ":c" or ":cls":
                 File.Delete(Files.Log);
                 File.Create(Files.Log).Dispose();
                 break;
-            case ":c":
-                File.Delete(Files.Log);
-                File.Create(Files.Log).Dispose();
-                break;
-            case ":cls":
-                File.Delete(Files.Log);
-                File.Create(Files.Log).Dispose();
-                break;
-            case ":h":
+            case ":help" or ":h":
                 String.WriteMarkupWarning("RTFM", "[gray]");
                 break;
-            case ":help":
-                String.WriteMarkupWarning("RTFM", "[gray]");
-                break;
-            case ":cs":
+            case ":changeserver" or ":cs":
                 CmdChangeServer(cmd.Split(" ", 2, StringSplitOptions.TrimEntries)[1]);
                 break;
-            case ":changeserver":
-                CmdChangeServer(cmd.Split(" ", 2, StringSplitOptions.TrimEntries)[1]);
+            case ":changeencoding" or ":cenc":
+                CmdCenc(cmd.Split(' ')[1]);
                 break;
-            case ":cenc":
-                CmdCenc(cmd.Remove(0, 6));
+            case ":exit" or ":q":
                 break;
-            case ":changeencoding":
-                CmdCenc(cmd.Remove(0, 16));
-                break;
-            case ":q":
-                break;
-            case ":exit":
-                break;
-            case ":bl":
+            case ":blacklist" or ":bl":
                 if (cmd.Split(" ").Length != 1)
                 {
                     if (NewBlackList(cmd.Split(" ", 2)[1]))
-                        String.WriteWarning(Lang.getText(Keys.alreadyBlacklistedText));
+                        String.WriteWarning(Lang.GetText(Keys.alreadyBlacklistedText));
                 }
                 else
                 {
                     ClearAll();
-                    Console.WriteLine(Lang.getText(Keys.blacklistTitle));
+                    Console.WriteLine(Lang.GetText(Keys.blacklistTitle));
                     Console.WriteLine(File.ReadAllText(Files.BlackList));
-                    Spectre.Console.AnsiConsole.MarkupLine("[gray]" + Lang.getText(Keys.keyToContinueText) + "[/]");
+                    Spectre.Console.AnsiConsole.MarkupLine("[gray]" + Lang.GetText(Keys.keyToContinueText) + "[/]");
                     Console.ReadKey();
                 }
                 break;
             default:
-                if (cmd.EndsWith(':'))
+                if (cmd.IndexOf(':', 1) != -1)
                     Write(cmd);
-                else String.WriteWarning(Lang.getText(Keys.commandNotFoundText));
+                else String.WriteWarning(Lang.GetText(Keys.commandNotFoundText));
                 break;
         }
     }
@@ -248,14 +229,14 @@ public static class Mode
     }
     public static void Message()
     {
-        Console.Title = "WriteO - " + Lang.getText(Keys.menuMessages);
+        Console.Title = "WriteO - " + Lang.GetText(Keys.menuMessages);
         string log, input;
         while (true)
         {
             if (IsBlackListed(Files.FilePath))
             {
-                String.WriteWarning(Lang.getText(Keys.gotBannedText));
-                String.WriteCenteredText(Lang.getText(Keys.serverSelectText), Console.WindowHeight / 2 + 1);
+                String.WriteWarning(Lang.GetText(Keys.gotBannedText));
+                String.WriteCenteredText(Lang.GetText(Keys.serverSelectText), Console.WindowHeight / 2 + 1);
                 CmdChangeServer(Console.ReadLine()!);
             }
             else
@@ -266,7 +247,7 @@ public static class Mode
 
                 ClearAll();
                 #region Log Output
-                Console.WriteLine($"-- " + Lang.getText(Keys.menuMessages) + " --\n");
+                Console.WriteLine($"-- " + Lang.GetText(Keys.menuMessages) + " --\n");
                 for (int i = lineCount; i > 0; i--)
                 {
                     Console.WriteLine(splitLog[splitLog.Length - i]);
@@ -302,19 +283,19 @@ public static class Mode
     }
     private static void CmdCenc(string input)
     {
-        switch (input)
+        switch (input.ToLower())
         {
             case "u8":
                 Console.OutputEncoding = Encoding.UTF8;
                 break;
-            case "ascii":
+            case "ascii" or "ansi":
                 Console.OutputEncoding = Encoding.ASCII;
                 break;
             case "u16":
                 Console.OutputEncoding = Encoding.Unicode;
                 break;
             default:
-                String.WriteWarning(Lang.getText(Keys.invalidEncoding));
+                String.WriteWarning(Lang.GetText(Keys.invalidEncoding));
                 break;
         }
     }

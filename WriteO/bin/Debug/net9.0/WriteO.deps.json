@@ -9,7 +9,8 @@
       "WriteO/1.0.0": {
         "dependencies": {
           "Spectre.Console": "0.54.0",
-          "Terminal.Gui": "1.19.0"
+          "Terminal.Gui": "1.19.0",
+          "YamlDotNet": "17.1.0"
         },
         "runtime": {
           "WriteO.dll": {}
@@ -80,6 +81,14 @@
             "locale": "pt-PT"
           }
         }
+      },
+      "YamlDotNet/17.1.0": {
+        "runtime": {
+          "lib/net8.0/YamlDotNet.dll": {
+            "assemblyVersion": "17.0.0.0",
+            "fileVersion": "17.1.0.0"
+          }
+        }
       }
     }
   },
@@ -123,6 +132,13 @@
       "sha512": "sha512-Pgdlgout2KsBX+tO4t4mmg3YAL0vhT8falV4T77ohuQECel0q9agGKDWEfB0Cs1EnsGlrs7kCxocwphguKOVww==",
       "path": "terminal.gui/1.19.0",
       "hashPath": "terminal.gui.1.19.0.nupkg.sha512"
+    },
+    "YamlDotNet/17.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AhsNXgeAs3Ugt653t8LC44xXDuldFfwBpWbWX9pN3e4Yg8U5Bk8jLn8eXtGv5HV2V2nHu7F46fqsPC+tpcTGAA==",
+      "path": "yamldotnet/17.1.0",
+      "hashPath": "yamldotnet.17.1.0.nupkg.sha512"
     }
   }
 }

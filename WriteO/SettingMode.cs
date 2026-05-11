@@ -4,14 +4,8 @@ public static class SettingMode
 {
     private static int selectedIndex = 0;
 
-    private static readonly string[] options =
-    {
-        "Name",
-        "Server Location",
-        "Key",
-        "Language",
-        "Exit"
-    };
+    private static string[] options = new string[5];
+
     private static readonly string[] asciiTitle =
     {
         @" _____      _   _   _                 ",
@@ -23,9 +17,19 @@ public static class SettingMode
         @"                             __/ |    ",
         @"                            |___/     "
     };
+    private static void ReloadOptionsText()
+    {
+        Console.Title = "WriteO - " + Lang.GetText(Keys.menuSettings);
+        options[0] = Lang.GetText(Keys.settingsNameText);
+        options[1] = Lang.GetText(Keys.settiingsServerLocText);
+        options[2] = Lang.GetText(Keys.settingsKeyText);
+        options[3] = Lang.GetText(Keys.settingsLanguageText);
+        options[4] = Lang.GetText(Keys.menuExit);
+    }
     public static void Show()
     {
-        Console.Title = "WriteO - Settings";
+        ReloadOptionsText();
+        selectedIndex = 0;
         ConsoleKey key;
         do
         {
@@ -107,30 +111,33 @@ public static class SettingMode
         switch (selectedIndex)
         {
             case 0:
-                Console.Write("Enter new Name: ");
+                Console.Write(Lang.GetText(Keys.nameEnterText));
                 string temp = Console.ReadLine() ?? User.Name;
                 User.Name = temp.Length > 4 ? temp : User.Name;
                 break;
 
             case 1:
-                Console.Write("Enter new Server Location: ");
+                Console.Write(Lang.GetText(Keys.serverSelectText));
                 Files.Log = Console.ReadLine() ?? Files.Log;
                 break;
 
             case 2:
-                Console.Write("Enter new Key (int): ");
+                Console.Write(Lang.GetText(Keys.keyEnterText));
                 if (int.TryParse(Console.ReadLine(), out int key))
                     User.Key = key;
                 break;
             case 3:
-                Console.Write("Enter new Language: ");
+                Console.Write(Lang.GetText(Keys.languageEnterText));
                 if (Enum.TryParse<Languages>(Console.ReadLine(), true, out Languages lang))
+                {
                     User.setLang(lang);
+                    ReloadOptionsText();
+                }
                 break;
             case 4:
                 return;
         }
-        Console.WriteLine("\nPress any key to return...");
+        Console.WriteLine(Lang.GetText(Keys.keyToContinueText));
         selectedIndex = 0;
         Console.ReadKey(true);
     }

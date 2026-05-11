@@ -13,17 +13,18 @@ internal static class FileSystem
         @"                         __/ |                      ",
         @"                        |___/                       "
     };
-    private static string[] options =
-    {
-        "Upload",
-        "Download",
-        "Exit"
-    };
+    private static string[] options = new string[3];
     private static int selectedIndex = 0;
-
+    private static void ReloadOptionsText()
+    {
+        options[0] = Lang.GetText(Keys.fileUploadText);
+        options[1] = Lang.GetText(Keys.fileDownLoadText);
+        options[2] = Lang.GetText(Keys.menuExit);
+    }
     public static void Show()
     {
-        Console.Title = "WriteO - Files";
+        Console.Title = "WriteO - " + Lang.GetText(Keys.menuFiles);
+        ReloadOptionsText();
         ConsoleKey key;
         do
         {
@@ -157,7 +158,7 @@ internal static class FileSystem
             case 2:
                 return;
         }
-        Console.WriteLine("\nPress any key to return...");
+        Console.WriteLine(Lang.GetText(Keys.keyToContinueText));
         selectedIndex = 0;
         Console.ReadKey(true);
     }

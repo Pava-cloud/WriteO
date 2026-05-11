@@ -51,6 +51,10 @@
             "Terminal.Gui": {
               "target": "Package",
               "version": "[1.19.0, )"
+            },
+            "YamlDotNet": {
+              "target": "Package",
+              "version": "[17.1.0, )"
             }
           },
           "imports": [

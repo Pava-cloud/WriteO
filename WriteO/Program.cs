@@ -110,7 +110,7 @@ class Program
         if (newUser)
         {
             string path;
-            Console.WriteLine(Lang.getText(Keys.serverSelectText));
+            Console.WriteLine(Lang.GetText(Keys.serverSelectText));
             do
             {
                 do { } while (string.IsNullOrEmpty(path = Console.ReadLine()!));
