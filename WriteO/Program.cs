@@ -12,11 +12,11 @@ class Program
     {
         HandleArgs(args);
         Console.Title = verbose ? "WriteO - Starting. (Building)" : "WriteO - Starting.";
-        String.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
+        StringExtras.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
         ClearAll();
         Console.Title = verbose ? "WriteO - Starting.. (Initializing)" : "WriteO - Starting..";
-        String.WriteCenteredText("Welcome to WriteO - The successor to WriteC", Console.WindowHeight / 4);
-        String.WriteCenteredText("Initializing...", Console.WindowHeight / 4 + 1);
+        StringExtras.WriteCenteredText("Welcome to WriteO - The successor to WriteC", Console.WindowHeight / 4);
+        StringExtras.WriteCenteredText("Initializing...", Console.WindowHeight / 4 + 1);
         if (Files.FilePath == string.Empty) FilePathInit();
         Console.Title = verbose ? "WriteO - Starting... (Fetching Data)" : "WriteO - Starting...";
         Fetch();
@@ -91,17 +91,7 @@ class Program
         {
             File.Create(Files.FilePath).Dispose();
         }
-        switch (Environment.OSVersion.Platform)
-        {
-            case PlatformID.Win32NT:
-                Files.NameFile = Environment.GetEnvironmentVariable("WriteOPath") + '\\' + Files.NameFile;
-                break;
-            case PlatformID.Unix:
-                Files.NameFile = Environment.GetEnvironmentVariable("WriteOPath") + '/' + Files.NameFile;
-                break;
-            case PlatformID.MacOSX:
-                break;
-        }
+        Files.NameFile = Files.JoinPath(Environment.GetEnvironmentVariable("WriteOPath")!, Files.NameFile);
     }
     private static void Fetch()
     {
@@ -115,36 +105,9 @@ class Program
             {
                 do { } while (string.IsNullOrEmpty(path = Console.ReadLine()!));
             } while (!Directory.Exists(path));
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                if (path[^1] == '/')
-                {
-                    Files.Log = path + "log.ocht";
-                    Files.FS = path + "files/";
-                    Files.BlackList = path + "blacklist.ocht";
-                }
-                else
-                {
-                    Files.Log = path + "/log.ocht";
-                    Files.FS = path + "/files/";
-                    Files.BlackList = path + "/blacklist.ocht";
-                }
-            }
-            else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                if (path[^1] == '\\')
-                {
-                    Files.Log = path + "log.ocht";
-                    Files.FS = path + "files\\";
-                    Files.BlackList = path + "blacklist.ocht";
-                }
-                else
-                {
-                    Files.Log = path + "\\log.ocht";
-                    Files.FS = path + "\\files\\";
-                    Files.BlackList = path + "\\blacklist.ocht";
-                }
-            }
+            Files.Log = Files.JoinPath(path, "log.ocht");
+            Files.FS = Files.JoinPath(path, "files" + Files.Sep);
+            Files.BlackList = Files.JoinPath(path, "blacklist.ocht");
             using (StreamWriter streamWriter = new StreamWriter(Files.FilePath))
             {
                 streamWriter.WriteLine(Files.Log + '\n' + Files.FS + '\n' + Files.BlackList);
@@ -173,48 +136,21 @@ class Program
     }
     public static void ClearAll()
     {
-        // Source - https://stackoverflow.com/a
-        // Posted by Alex
-        // Retrieved 2026-01-16, License - CC BY-SA 4.0
-
         Console.Clear();
         Console.WriteLine("\x1b[3J");
     }
 }
 public static class Files
 {
+    public static char Sep => Path.DirectorySeparatorChar;
+
+    public static string JoinPath(string dir, string file)
+        => dir.TrimEnd(Sep) + Sep + file;
+
     public static string NameFile { get; set; } = "name.txt";
     public static string Log { get; set; } = "";
     public static string Usr { get; } = "usr.json";
     public static string FS { get; set; } = "";
     public static string FilePath { get; set; } = string.Empty;
     public static string BlackList { get; set; } = "BlackList.ocht";
-}
-public class newRandom
-{
-    private int s;
-    public newRandom()
-    {
-        s = (int)(DateTime.Now.Ticks % int.MaxValue);
-    }
-    public newRandom(int seed)
-    {
-        s = seed;
-    }
-    public int Next(bool includeNegatives = false)
-    {
-        if (!includeNegatives)
-            s = (s * 47231 + 8209) % 236150;
-        else
-            s = (s * 47231 + 8209) % 236150;
-        return s;
-    }
-    public int Next(int mod, bool includeNegatives = false)
-    {
-        if (!includeNegatives)
-            s = (s * 47231 + 8209) % mod;
-        else
-            s = (s * -47231 + 8209) % mod;
-        return s;
-    }
 }

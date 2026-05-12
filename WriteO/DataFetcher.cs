@@ -1,9 +1,6 @@
 ﻿namespace WriteO;
 public static class DataFetcher
 {
-    private static string[] allowedLangs = {
-        "EN"
-    };
     public static string Log()
     {
         string log = "";
@@ -12,7 +9,7 @@ public static class DataFetcher
             BinaryReader logGetter = new(File.Open(Files.Log, System.IO.FileMode.Open));
             try
             {
-                log = String.DecodeText(logGetter.ReadString(), User.Key);
+                log = StringExtras.DecodeText(logGetter.ReadString(), User.Key);
 
             }
             catch (EndOfStreamException)
@@ -34,7 +31,6 @@ public static class DataFetcher
             using (StreamReader nameGetter = new StreamReader(Files.NameFile))
             {
                 name = nameGetter.ReadLine()!;
-                Console.WriteLine(name);
             }
         }
         else

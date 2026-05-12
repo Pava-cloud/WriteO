@@ -85,7 +85,7 @@ public static class SettingMode
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
         {
-            String.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i + 10);
+            StringExtras.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i + 10);
         }
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;

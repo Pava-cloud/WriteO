@@ -23,9 +23,6 @@ public static class User
         get { return lang; }
         private set
         {
-            //if (string.IsNullOrEmpty(value.ToString())) throw new ArgumentException("Lang was null, Lang cannot be empty");
-            //else if (DataFetcher.LangIsAllowed(value.ToString())) lang = value;
-            //else throw new InvalidDataException($"value {value} is not allowed as Lang\nallowed values for Lang: {DataFetcher.ListAllLang()}");
             lang = value;
         }
     }
@@ -42,11 +39,6 @@ public static class User
         }
     }
 
-#pragma warning disable CS0114
-    public static string ToString()
-    {
-        return Name;
-    }
     public static void setLang(Languages newLang)
     {
         Lang = newLang;

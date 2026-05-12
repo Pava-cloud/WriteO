@@ -127,7 +127,7 @@ internal static class FileSystem
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
         {
-            String.WriteCenteredMarkupText(asciiTitle[i], "[cyan3]", i + 10);
+            StringExtras.WriteCenteredMarkupText(asciiTitle[i], "[cyan3]", i + 10);
         }
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;

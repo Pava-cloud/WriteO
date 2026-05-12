@@ -7,7 +7,7 @@ public static class Mode
 {
     private static Modes[] options = { Modes.Messages, Modes.Files, Modes.Settings, Modes.Exit };
     private static int selectedIndex = 0;
-    private static readonly string[] @asciiTitle =
+    private static readonly string[] asciiTitle =
     {
         @" _    _      _ _        _____ ",
         @"| |  | |    (_) |      |  _  |",
@@ -24,7 +24,7 @@ public static class Mode
             ClearAll();
             for (int i = 0; i < asciiTitle.Length; i++)
             {
-                String.WriteCenteredMarkupText(asciiTitle[i], "", i + 10);
+                StringExtras.WriteCenteredMarkupText(asciiTitle[i], "", i + 10);
             }
             ConsoleKey key;
             do
@@ -36,21 +36,15 @@ public static class Mode
 
                 switch (key)
                 {
-                    case ConsoleKey.UpArrow:
-                        selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
-                        break;
-                    case ConsoleKey.K:
+                    case ConsoleKey.UpArrow or ConsoleKey.K:
                         selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
                         break;
 
-                    case ConsoleKey.DownArrow:
-                        selectedIndex = (selectedIndex + 1) % options.Length;
-                        break;
-                    case ConsoleKey.J:
+                    case ConsoleKey.DownArrow or ConsoleKey.J:
                         selectedIndex = (selectedIndex + 1) % options.Length;
                         break;
 
-                    case ConsoleKey.Enter:
+                    case ConsoleKey.Enter or ConsoleKey.Spacebar:
                         if (selectedIndex != options.Length - 1) HandleSelection();
                         else
                         {
@@ -59,16 +53,6 @@ public static class Mode
                             return;
                         }
                         break;
-                    case ConsoleKey.Spacebar:
-                        if (selectedIndex != options.Length - 1) HandleSelection();
-                        else
-                        {
-                            selectedIndex = 0;
-                            Console.Title = "WriteO";
-                            return;
-                        }
-                        break;
-
 
                     case ConsoleKey.Escape:
                         return;
@@ -84,7 +68,7 @@ public static class Mode
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
         {
-            String.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i + 10);
+            StringExtras.WriteCenteredMarkupText(asciiTitle[i], "[DeepPink4_2]", i + 10);
         }
         int windowWidth = Console.WindowWidth;
         int windowHeight = Console.WindowHeight;
@@ -133,7 +117,7 @@ public static class Mode
                 File.Create(Files.Log).Dispose();
                 break;
             case ":help" or ":h":
-                String.WriteMarkupWarning("RTFM", "[gray]");
+                StringExtras.WriteMarkupWarning("RTFM", "[gray]");
                 break;
             case ":changeserver" or ":cs":
                 CmdChangeServer(cmd.Split(" ", 2, StringSplitOptions.TrimEntries)[1]);
@@ -147,7 +131,7 @@ public static class Mode
                 if (cmd.Split(" ").Length != 1)
                 {
                     if (NewBlackList(cmd.Split(" ", 2)[1]))
-                        String.WriteWarning(Lang.GetText(Keys.alreadyBlacklistedText));
+                        StringExtras.WriteWarning(Lang.GetText(Keys.alreadyBlacklistedText));
                 }
                 else
                 {
@@ -159,9 +143,8 @@ public static class Mode
                 }
                 break;
             default:
-                if (cmd.IndexOf(':', 1) != -1)
-                    Write(cmd);
-                else String.WriteWarning(Lang.GetText(Keys.commandNotFoundText));
+                if (cmd.IndexOf(':', 1) != -1) Write(cmd);
+                else StringExtras.WriteWarning(Lang.GetText(Keys.commandNotFoundText));
                 break;
         }
     }
@@ -235,8 +218,8 @@ public static class Mode
         {
             if (IsBlackListed(Files.FilePath))
             {
-                String.WriteWarning(Lang.GetText(Keys.gotBannedText));
-                String.WriteCenteredText(Lang.GetText(Keys.serverSelectText), Console.WindowHeight / 2 + 1);
+                StringExtras.WriteWarning(Lang.GetText(Keys.gotBannedText));
+                StringExtras.WriteCenteredText(Lang.GetText(Keys.serverSelectText), Console.WindowHeight / 2 + 1);
                 CmdChangeServer(Console.ReadLine()!);
             }
             else
@@ -278,7 +261,7 @@ public static class Mode
         string log = DataFetcher.Log();
         string line = $"{User.Name}: {input}\n";
         BinaryWriter lineWriter = new(File.Open(Files.Log, System.IO.FileMode.Create));
-        lineWriter.Write(String.EncodeText(log + line, User.Key));
+        lineWriter.Write(StringExtras.EncodeText(log + line, User.Key));
         lineWriter.Close();
     }
     private static void CmdCenc(string input)
@@ -295,13 +278,16 @@ public static class Mode
                 Console.OutputEncoding = Encoding.Unicode;
                 break;
             default:
-                String.WriteWarning(Lang.GetText(Keys.invalidEncoding));
+                StringExtras.WriteWarning(Lang.GetText(Keys.invalidEncoding));
                 break;
         }
     }
     private static void CmdChangeServer(string path)
     {
-        do { } while (!Directory.Exists(path = Console.ReadLine()!));
+        if (!Directory.Exists(path))
+        {
+            do { } while (!Directory.Exists(path = Console.ReadLine()!));
+        }
         if (!IsBlackListed(path))
         {
             if (Environment.OSVersion.Platform == PlatformID.Unix)
