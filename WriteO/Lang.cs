@@ -97,12 +97,12 @@ public enum Keys
     invalidEncoding,
     nameEnterText,
     settingsNameText,
-    settiingsServerLocText,
+    settingsServerLocText,
     settingsKeyText,
     settingsLanguageText,
     keyEnterText,
     languageEnterText,
     fileUploadText,
     fileDownLoadText,
-
+    errorNameTooShort,
 }

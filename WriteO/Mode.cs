@@ -9,14 +9,14 @@ public static class Mode
     private static int selectedIndex = 0;
     private static readonly string[] asciiTitle =
     {
-        @" _    _      _ _        _____ ",
-        @"| |  | |    (_) |      |  _  |",
-        @"| |  | |_ __ _| |_ ___ | | | |",
-        @"| |/\| | '__| | __/ _ \| | | |",
-        @"\  /\  / |  | | ||  __/\ \_/ /",
-        @" \/  \/|_|  |_|\__\___| \___/ "
-
+      @"██╗    ██╗██████╗ ██╗████████╗███████╗ ██████╗ ",
+      @"██║    ██║██╔══██╗██║╚══██╔══╝██╔════╝██╔═══██╗",
+      @"██║ █╗ ██║██████╔╝██║   ██║   █████╗  ██║   ██║",
+      @"██║███╗██║██╔══██╗██║   ██║   ██╔══╝  ██║   ██║",
+      @"╚███╔███╔╝██║  ██║██║   ██║   ███████╗╚██████╔╝",
+      @" ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝   ╚═╝   ╚══════╝ ╚═════╝ "
     };
+
     public static void Select()
     {
         while (true)
@@ -54,8 +54,17 @@ public static class Mode
                         }
                         break;
 
-                    case ConsoleKey.Escape:
+                    case ConsoleKey.Q:
                         return;
+                    case ConsoleKey.M:
+                        Message();
+                        break;
+                    case ConsoleKey.F:
+                        FileSystem.Show();
+                        break;
+                    case ConsoleKey.S:
+                        SettingMode.Show();
+                        break;
                 }
 
             } while (true);
@@ -63,6 +72,8 @@ public static class Mode
     }
     private static void DrawMenu()
     {
+        string[] modeKeys = { "M", "F", "S", "Q" };
+        string[] modeIcons = { "󰍡", "", "", "󰈆" };
         string[] OutputModes = { Lang.GetText(Keys.menuMessages), Lang.GetText(Keys.menuFiles), Lang.GetText(Keys.menuSettings), Lang.GetText(Keys.menuExit) };
         Console.Clear();
         Console.CursorVisible = false;
@@ -75,9 +86,9 @@ public static class Mode
 
         for (int i = 0; i < OutputModes.Length; i++)
         {
-            string text = OutputModes[i];
+            string text = $"{modeIcons[i]}  {OutputModes[i].PadRight(40)}{modeKeys[i]}";
             int x = (windowWidth - text.Length) / 2;
-            int y = (windowHeight / 2 - OutputModes.Length / 2) + i;
+            int y = (windowHeight / 2 - OutputModes.Length / 2) + 2 * i;
 
             Console.SetCursorPosition(x, y);
 
@@ -112,9 +123,23 @@ public static class Mode
     {
         switch (cmd.Split(" ")[0])
         {
+            case ":files" or ":fs":
+                FileSystem.Show();
+                break;
+            case ":settings":
+                SettingMode.Show();
+                break;
             case ":clear" or ":c" or ":cls":
-                File.Delete(Files.Log);
-                File.Create(Files.Log).Dispose();
+                Program.ClearAll();
+                Console.CursorVisible = false;
+                StringExtras.WriteCenteredMarkupText("Are you sure? [[y/N]]", "[red]", Console.WindowHeight / 2);
+                ConsoleKey tmp = Console.ReadKey().Key;
+                Console.CursorVisible = true;
+                if (tmp == ConsoleKey.Y)
+                {
+                    File.Delete(Files.Log);
+                    File.Create(Files.Log).Dispose();
+                }
                 break;
             case ":help" or ":h":
                 StringExtras.WriteMarkupWarning("RTFM", "[gray]");
@@ -147,6 +172,7 @@ public static class Mode
                 else StringExtras.WriteWarning(Lang.GetText(Keys.commandNotFoundText));
                 break;
         }
+        Console.Title = "WriteO - " + Lang.GetText(Keys.menuMessages);
     }
     /// <summary>
     /// Appends the user string to thw Blacklist File unless it starts with "-u ",
@@ -240,14 +266,14 @@ public static class Mode
                     Console.WriteLine();
                 }
                 #endregion Log Output
-                input = Console.ReadLine()!;
+                input = TextInput();
                 #region Input
                 if (input.StartsWith(':'))
                 {
                     Command(input);
                     if (input == ":exit" || input == ":q") break;
                 }
-                else
+                else if (!String.IsNullOrWhiteSpace(input))
                 {
                     Write(input);
                 }
@@ -256,6 +282,85 @@ public static class Mode
         }
         Console.Title = "WriteO";
     } // DONE
+    private static string TextInput()
+    {
+        var buffer = new StringBuilder();
+        bool commandMode = false;
+
+        while (true)
+        {
+            RenderInputLine(buffer, commandMode);
+
+            var key = Console.ReadKey(intercept: true);
+
+            if (key.Key == ConsoleKey.Enter)
+                break;
+
+            commandMode = HandleKeyPress(key, buffer, commandMode);
+        }
+
+        return buffer.ToString();
+    }
+
+    private static void RenderInputLine(StringBuilder buffer, bool commandMode)
+    {
+        string now = DateTime.Now.ToString("HH:mm");
+        Console.CursorLeft = 0;
+        Console.Write(new string(' ', Console.WindowWidth));
+        Console.CursorLeft = Console.WindowWidth - (4 + now.Length);
+        Spectre.Console.AnsiConsole.Markup("[bold black on blue]  " + now + " [/]");
+        Console.CursorLeft = 0;
+
+        if (commandMode)
+            Console.Write(": " + buffer.ToString(1, buffer.Length - 1));
+        else
+            Console.Write("> " + buffer);
+    }
+
+    private static bool HandleKeyPress(ConsoleKeyInfo key, StringBuilder buffer, bool commandMode)
+    {
+        switch (key.Key)
+        {
+            case ConsoleKey.Backspace:
+                return HandleBackspace(buffer, commandMode);
+
+            case ConsoleKey.Escape:
+                if (commandMode)
+                {
+                    buffer.Remove(0, 1);
+                    return false; // exit command mode
+                }
+                return commandMode;
+
+            default:
+                if (key.KeyChar == ':' && buffer.Length == 0)
+                {
+                    buffer.Append(':');
+                    return true; // enter command mode
+                }
+                if (key.KeyChar != '\0')
+                {
+                    if (buffer.Length < Console.WindowWidth - 12)
+                        buffer.Append(key.KeyChar);
+                }
+                return commandMode;
+        }
+    }
+
+    private static bool HandleBackspace(StringBuilder buffer, bool commandMode)
+    {
+        if (buffer.Length == 0)
+            return commandMode;
+
+        if (buffer.Length == 1 && commandMode)
+        {
+            buffer.Remove(0, 1);
+            return false; // exit command mode
+        }
+
+        buffer.Remove(buffer.Length - 1, 1);
+        return commandMode;
+    }
     public static void Write(string input)
     {
         string log = DataFetcher.Log();

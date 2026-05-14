@@ -10,7 +10,7 @@ class Program
 
     static void Main(string[] args)
     {
-        HandleArgs(args);
+        bool message = HandleArgs(args);
         Console.Title = verbose ? "WriteO - Starting. (Building)" : "WriteO - Starting.";
         StringExtras.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
         ClearAll();
@@ -21,16 +21,19 @@ class Program
         Console.Title = verbose ? "WriteO - Starting... (Fetching Data)" : "WriteO - Starting...";
         Fetch();
         Console.Title = "WriteO";
-        Mode.Select();
+        if (message) Mode.Message();
+        else Mode.Select();
         ResetAll();
     }
-    private static void HandleArgs(string[] args)
+    private static bool HandleArgs(string[] args)
     {
         if (args.Length != 0)
         {
             for (int i = 0; i < args.Length; i++)
             {
                 string arg = args[i];
+                if (arg == "-m" || arg == "--message")
+                    return true;
                 if (arg == "-v" || arg == "--verbose")
                     verbose = true;
                 if (arg == "-h" || arg == "--help")
@@ -49,8 +52,11 @@ class Program
                 }
             }
         }
+        return false;
     }
-
+    /// <summary>
+    /// Message returned when starting with -h
+    /// </summary>
     private static void WriteHelp()
     {
         FilePathInit();
@@ -59,8 +65,8 @@ class Program
         AnsiConsole.MarkupLine("[LightGoldenrod1]OPTIONS:[/]");
         Console.WriteLine("\t-v, --verbose\t\tShows extra information about startup");
         Console.WriteLine($"\t-c, --config\t\tUses the given Config path instead of the default one ({Path.GetDirectoryName(Files.FilePath)})");
+        Console.WriteLine("\t-m, --message\t\tStarts without the main page in a command-only mode");
         Environment.Exit(0);
-
     }
 
     private static void FilePathInit()

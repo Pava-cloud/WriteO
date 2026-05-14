@@ -26,7 +26,6 @@
 //host.lan/Data/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.pdb
 //host.lan/Data/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.genruntimeconfig.cache
 //host.lan/Data/coding/WriteO/WriteO/obj/Debug/net9.0/ref/WriteO.dll
-//host.lan/Data/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.sourcelink.json
 //host.lan/Data/coding/WriteO/WriteO/bin/Debug/net9.0/Spectre.Console.dll
 //host.lan/Data/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.csproj.Up2Date
 /home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/Spectre.Console.dll
@@ -50,3 +49,4 @@
 //host.lan/Data/coding/WriteO/WriteO/bin/Debug/net9.0/runtimes/win/lib/net9.0/System.Management.dll
 //host.lan/Data/coding/WriteO/WriteO/obj/Debug/net9.0/WriteO.csproj.AssemblyReference.cache
 /home/pava/coding/WriteO/WriteO/bin/Debug/net9.0/YamlDotNet.dll
+//host.lan/Data/coding/WriteO/WriteO/bin/Debug/net9.0/YamlDotNet.dll

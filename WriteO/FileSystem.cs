@@ -4,14 +4,12 @@ internal static class FileSystem
 {
     private static string[] asciiTitle =
     {
-        @"______ _ _        _____           _                 ",
-        @"|  ___(_) |      /  ___|         | |                ",
-        @"| |_   _| | ___  \ `--. _   _ ___| |_ ___ _ __ ___  ",
-        @"|  _| | | |/ _ \  `--. \ | | / __| __/ _ \ '_ ` _ \ ",
-        @"| |   | | |  __/ /\__/ / |_| \__ \ ||  __/ | | | | |",
-        @"\_|   |_|_|\___| \____/ \__, |___/\__\___|_| |_| |_|",
-        @"                         __/ |                      ",
-        @"                        |___/                       "
+        @"███████╗██╗██╗     ███████╗███████╗",
+        @"██╔════╝██║██║     ██╔════╝██╔════╝",
+        @"█████╗  ██║██║     █████╗  ███████╗",
+        @"██╔══╝  ██║██║     ██╔══╝  ╚════██║",
+        @"██║     ██║███████╗███████╗███████║",
+        @"╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝",
     };
     private static string[] options = new string[3];
     private static int selectedIndex = 0;
@@ -35,20 +33,13 @@ internal static class FileSystem
 
             switch (key)
             {
-                case ConsoleKey.UpArrow:
+                case ConsoleKey.UpArrow or ConsoleKey.K:
                     selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
                     break;
-                case ConsoleKey.K:
-                    selectedIndex = (selectedIndex - 1 + options.Length) % options.Length;
-                    break;
-
-                case ConsoleKey.DownArrow:
+                case ConsoleKey.DownArrow or ConsoleKey.J:
                     selectedIndex = (selectedIndex + 1) % options.Length;
                     break;
-                case ConsoleKey.J:
-                    selectedIndex = (selectedIndex + 1) % options.Length;
-                    break;
-                case ConsoleKey.Enter:
+                case ConsoleKey.Enter or ConsoleKey.Spacebar:
                     if (selectedIndex != options.Length - 1) HandleSelection();
                     else
                     {
@@ -58,19 +49,15 @@ internal static class FileSystem
                     }
                     break;
 
-                case ConsoleKey.Spacebar:
-                    if (selectedIndex != options.Length - 1) HandleSelection();
-                    else
-                    {
-                        selectedIndex = 0;
-                        Console.Title = "WriteO";
-                        return;
-                    }
-                    break;
-
-                case ConsoleKey.Escape:
+                case ConsoleKey.Q:
                     Console.Title = "WriteO";
                     return;
+                case ConsoleKey.U:
+                    Upload();
+                    break;
+                case ConsoleKey.D:
+                    Download();
+                    break;
             }
 
         } while (true);
@@ -123,6 +110,8 @@ internal static class FileSystem
     }
     private static void DrawMenu()
     {
+        string[] modeKeys = { "U", "D", "Q" };
+        string[] modeIcons = { "", "", "󰈆" };
         Console.Clear();
         Console.CursorVisible = false;
         for (int i = 0; i < asciiTitle.Length; i++)
@@ -134,9 +123,10 @@ internal static class FileSystem
 
         for (int i = 0; i < options.Length; i++)
         {
-            string text = options[i];
+            string text = $"{modeIcons[i]}  {options[i].PadRight(40)}{modeKeys[i]}";
+
             int x = (windowWidth - text.Length) / 2;
-            int y = (windowHeight / 2 - options.Length / 2) + i;
+            int y = (windowHeight / 2 - options.Length / 2) + 2 * i;
 
             Console.SetCursorPosition(x, y);
 
