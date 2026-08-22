@@ -10,7 +10,7 @@ class Program
 
     static void Main(string[] args)
     {
-        bool message = HandleArgs(args);
+        bool messageOnly = HandleArgs(args);
         Console.Title = verbose ? "WriteO - Starting. (Building)" : "WriteO - Starting.";
         StringExtras.WriteCenteredMarkupText("✓ Build completed successfully", "[green]", Console.WindowHeight / 2);
         ClearAll();
@@ -21,7 +21,7 @@ class Program
         Console.Title = verbose ? "WriteO - Starting... (Fetching Data)" : "WriteO - Starting...";
         Fetch();
         Console.Title = "WriteO";
-        if (message) Mode.Message();
+        if (messageOnly) Mode.Message();
         else Mode.Select();
         ResetAll();
     }
@@ -101,10 +101,11 @@ class Program
     }
     private static void Fetch()
     {
-        Lang.Init();
         (string userName, bool newUser) = DataFetcher.GetName()!;
         if (newUser)
         {
+            Directory.Move("Languages", Environment.GetEnvironmentVariable("WriteOPath")!);
+            Lang.Init();
             string path;
             Console.WriteLine(Lang.GetText(Keys.serverSelectText));
             do
@@ -121,6 +122,7 @@ class Program
         }
         else
         {
+            Lang.Init();
             using (StreamReader streamReader = new StreamReader(Files.FilePath))
             {
                 Files.Log = streamReader.ReadLine()!;

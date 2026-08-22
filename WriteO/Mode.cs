@@ -306,7 +306,7 @@ public static class Mode
     {
         string now = DateTime.Now.ToString("HH:mm");
         Console.CursorLeft = 0;
-        Console.Write(new string(' ', Console.WindowWidth));
+        Spectre.Console.AnsiConsole.Markup("[gray]" + new string(' ', Console.WindowWidth) + "[/]");
         Console.CursorLeft = Console.WindowWidth - (4 + now.Length);
         Spectre.Console.AnsiConsole.Markup("[bold black on blue]  " + now + " [/]");
         Console.CursorLeft = 0;

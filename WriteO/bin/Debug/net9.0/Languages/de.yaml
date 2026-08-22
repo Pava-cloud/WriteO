@@ -1,0 +1,27 @@
+serverSelectText: "Bitte Pfad für den Server wählen."
+alreadyBlacklistedText: "Nutzer bereits blockiert"
+keyToContinueText: "Drücken Sie eine beliebige Taste"
+commandNotFoundText: "Befehl nicht gefunden"
+
+blacklistTitle: "Blockierte Nutzer:"
+
+menuMessages: "Nachrichten"
+menuFiles: "Dateien"
+menuSettings: "Einstellungen"
+menuExit: "Verlassen"
+
+gotBannedText: "Sie wurden von diesem Verlauf blockiert."
+invalidEncoding: "Keine erlaubte Verschlüsselung"
+
+nameEnterText: "Bitte geben Sie Ihren Namen ein: "
+
+settingsNameText: "Name"
+settingsServerLocText: "Server-Ort"
+settingsKeyText: "Schlüssel"
+settingsLanguageText: "Sprache"
+
+keyEnterText: "Neuen Schüssel eingeben: "
+languageEnterText: "Neue Sprache eingeben: "
+
+fileUploadText: "Hochladen"
+fileDownLoadText: "Herunterladen"

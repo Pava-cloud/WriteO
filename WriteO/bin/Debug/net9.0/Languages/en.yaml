@@ -1,0 +1,29 @@
+serverSelectText: "Please select a path for the server."
+alreadyBlacklistedText: "User already Blacklisted"
+keyToContinueText: "Press any key to continue"
+commandNotFoundText: "Command not found"
+
+blacklistTitle: "Blacklisted Users:"
+
+menuMessages: "Messages"
+menuFiles: "Files"
+menuSettings: "Settings"
+menuExit: "Quit"
+
+gotBannedText: "You have been banned from this server."
+invalidEncoding: "Not a valid encoding."
+
+nameEnterText: "Please enter your name: "
+
+settingsNameText: "Name"
+settingsServerLocText: "Server Location"
+settingsKeyText: "Key"
+settingsLanguageText: "Language"
+
+keyEnterText: "Enter new Key: "
+languageEnterText: "Enter new Language: "
+
+fileUploadText: "Upload"
+fileDownLoadText: "Download"
+
+errorNameTooShort: "Name must be at least 5 characters long."
